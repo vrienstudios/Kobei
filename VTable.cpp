@@ -55,6 +55,7 @@ System::Object^ VTable::operator()(System::Object^ item) {
 		return objects[System::Array::IndexOf(accessors, item)];
 }
 
+// If there are not any objects populating the array, create the arrays and populate them.
 void VTable::CreateKeyValuePairs(System::Object^ key, System::Object^ item) {
 	accessors = gcnew cli::array<System::Object^>(1);
 	accessors[0] = key;
@@ -65,6 +66,7 @@ void VTable::CreateKeyValuePairs(System::Object^ key, System::Object^ item) {
 	objects[0] = item;
 }
 
+// Add objects to the array.
 void VTable::AddKeyValuePairs(System::Object^ key, System::Object^ item) {
 	cli::array<System::Object^>^ tempArray = gcnew cli::array<System::Object^>(objects->Length + 1);
 	
@@ -96,6 +98,7 @@ void VTable::AddKeyValuePairs(System::Object^ key, System::Object^ item) {
 
 }
 
+// Add object to array.
 void VTable::Add(System::Object^ key, System::Object^ item) {
 	if (TableType != item->GetType()) {
 		std::exception("Types not the same, and multi-type support is not enabled.");

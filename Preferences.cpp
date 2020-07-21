@@ -5,6 +5,7 @@
 
 std::string Preferences::GetBookDirectory()
 {
+	// Of bookdir is not loaded into memory, load it.
 	if (std::strlen(bookDir) == 0) {
 		std::cout << "Bk_Dir not global, creating global." << std::endl;
 		std::ifstream settingsFile;
@@ -16,7 +17,7 @@ std::string Preferences::GetBookDirectory()
 		bookDir[sizeof(bookDir) - 1] = 0;
 		return a;
 	}
-	else
+	else // else do not.
 		return bookDir;
 }
 
@@ -80,7 +81,8 @@ std::string Preferences::GetFileName()
 
 std::string Preferences::GetDirectory()
 {
-	if (std::strlen(regDir) == 0) {
+	// If the directory is not currently loaded into memory, load it into memory.
+	if (std::strlen(regDir) == 0) { 
 		std::cout << "Ex_DIR not global, creating global." << std::endl;
 		std::string f = GetFileName();
 		f = f.substr(0, f.find_last_of("\\/"));
@@ -88,6 +90,6 @@ std::string Preferences::GetDirectory()
 		regDir[sizeof(regDir) - 1] = 0;
 		return f;
 	}
-	else
+	else // else return directory.
 		return std::string(regDir);
 }

@@ -131,6 +131,8 @@ void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::
 		System::Drawing::Graphics^ graphics = e->Graphics;
 		System::Drawing::StringFormat^ strfm = gcnew System::Drawing::StringFormat();
 		graphics->DrawString(Vpan->Vol->Name, Vpan->PFont, gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black), rect, strfm);
+		delete graphics;
+		delete strfm;
 		break;
 	}
 	case 1: {
@@ -138,6 +140,8 @@ void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::
 		System::Drawing::Graphics^ graphics = e->Graphics;
 		System::Drawing::StringFormat^ strfm = gcnew System::Drawing::StringFormat();
 		graphics->DrawString(Vpan->Chp->Name, Vpan->PFont, gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black), rect, strfm);
+		delete graphics;
+		delete strfm;
 	}
 	}
 }
