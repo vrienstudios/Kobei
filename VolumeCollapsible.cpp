@@ -1,6 +1,7 @@
 #include "VolumeCollapsible.h"
 #include "Vpanel.h"
 
+// Generate a volumeCollapsible object via VTable Dict
 VolumeCollapsible::VolumeCollapsible(VTable^ volumeList)
 {
 	if (volumeList->Length() == 0) {
@@ -16,6 +17,7 @@ VolumeCollapsible::VolumeCollapsible(VTable^ volumeList)
 	GenerateControls();
 }
 
+// Generate a volumeCollapsible object via standard .NET array.
 VolumeCollapsible::VolumeCollapsible(cli::array<Volume^>^ volumeList)
 {
 	if (volumeList->Length == 0)
@@ -65,6 +67,7 @@ void VolumeCollapsible::GenerateControls()
 		header->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &VolumeCollapsible::OnMouseClick);
 		header->OpenClose = FALSE;
 		header->Index = indexCount;
+		header->GenerateGraphics();
 		indexCount++;
 		header->Location = System::Drawing::Point(hbufferW, hbufferH);
 		hbufferH += header->Height + 5;
@@ -98,7 +101,7 @@ void VolumeCollapsible::GenerateControls()
 
 			chpCard->Location::set(System::Drawing::Point(0, cbufferY));
 			cbufferY += chpCard->Height + 5;
-
+			chpCard->GenerateGraphics();
 			list->Controls->Add(chpCard);
 		}
 		this->Controls->Add(header);
@@ -124,37 +127,17 @@ void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::
 	VPanel^ Vpan = safe_cast<VPanel^>(sender);
 	switch (Vpan->VolChp) {
 	case 0: {
-		System::Windows::Forms::Label^ headerTitle;
-		headerTitle = gcnew System::Windows::Forms::Label;
-		headerTitle->Visible = TRUE;
-		headerTitle->Text = Vpan->Vol->Name;
-		headerTitle->Width = Vpan->Width;
-		headerTitle->Height = Vpan->Height;
-		System::Drawing::Graphics^ graphics = headerTitle->CreateGraphics();
-		System::Drawing::Font^ tFont;
-		System::Drawing::SizeF Size;
-
-		int tw, th;
-		tw = headerTitle->DisplayRectangle.Width - 3;
-		th = headerTitle->DisplayRectangle.Height - 3;
-
-		for (int idx = 1; idx <= 100; idx++) {
-			tFont = gcnew System::Drawing::Font("Arial", (idx));
-			Size = graphics->MeasureString(Vpan->Vol->Name, tFont);
-			if ((Size.Width > tw) || (Size.Height > th)) {
-				headerTitle->Font = gcnew System::Drawing::Font("Arial", idx - 1);
-				break;
-			}
-		}
-
-		delete graphics;
 		System::Drawing::RectangleF rect = System::Drawing::RectangleF(0, 20, Vpan->Width, Vpan->Height);
-		graphics = e->Graphics;
+		System::Drawing::Graphics^ graphics = e->Graphics;
 		System::Drawing::StringFormat^ strfm = gcnew System::Drawing::StringFormat();
-		graphics->DrawString(headerTitle->Text, headerTitle->Font, gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black), rect, strfm);
-		//delete Vpan;
-		delete headerTitle;
+		graphics->DrawString(Vpan->Vol->Name, Vpan->PFont, gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black), rect, strfm);
 		break;
+	}
+	case 1: {
+		System::Drawing::RectangleF rect = System::Drawing::RectangleF(0, 20, Vpan->Width, Vpan->Height);
+		System::Drawing::Graphics^ graphics = e->Graphics;
+		System::Drawing::StringFormat^ strfm = gcnew System::Drawing::StringFormat();
+		graphics->DrawString(Vpan->Chp->Name, Vpan->PFont, gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black), rect, strfm);
 	}
 	}
 }
