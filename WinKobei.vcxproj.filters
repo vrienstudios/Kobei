@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Form">
+      <UniqueIdentifier>{11eec906-64d3-4ef5-a15d-5181010cd451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Form">
+      <UniqueIdentifier>{782501b5-7289-4a74-b72f-c34a89563213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes">
+      <UniqueIdentifier>{2a6a3597-39ad-4416-91a9-e01cd530563c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\Data">
+      <UniqueIdentifier>{9007b09f-a6b2-49af-aa59-93592130c070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes">
+      <UniqueIdentifier>{0e5fac06-0c45-4c21-b43c-a893a553a005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Data">
+      <UniqueIdentifier>{e0aace61-ae8d-4de3-b8db-1c9d2e7c0098}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Form\UI">
+      <UniqueIdentifier>{0d6a32b7-8600-4f22-b55a-3af76a2b7200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Form\UI">
+      <UniqueIdentifier>{70aed4fc-46d0-4e5a-9209-a5a505e5de4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\Data\Util">
+      <UniqueIdentifier>{13770736-c6ac-4ade-ac44-337fafbb2022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Classes\Data\Book">
+      <UniqueIdentifier>{10308a42-5fd6-4557-b746-c880b8608dce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Data\Book">
+      <UniqueIdentifier>{1b8f0ea6-5e60-41cd-84e6-df8354d3694c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes\Data\Functions">
+      <UniqueIdentifier>{009a5641-6aa6-4c25-9a84-4a63956f1e60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\UI">
+      <UniqueIdentifier>{ae7b746d-21ad-4bd2-9876-f98f39023416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Errors">
+      <UniqueIdentifier>{d55824e9-ca79-4838-b0e3-b0f466babf56}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="Dimensions.h">
+      <Filter>Header Files\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UserResponse.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BookCard.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dashboard.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions.h">
+      <Filter>Header Files\Classes\Data\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Book.h">
+      <Filter>Header Files\Classes\Data\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="Chapter.h">
+      <Filter>Header Files\Classes\Data\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="Page.h">
+      <Filter>Header Files\Classes\Data\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="BookAddForm.h">
+      <Filter>Header Files\Classes\Data\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="VTable.h">
+      <Filter>Header Files\Classes\Data\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="panel.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Preferences.h">
+      <Filter>Header Files\Classes\Data\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Volume.h">
+      <Filter>Header Files\Classes\Data\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceHandler.h">
+      <Filter>Header Files\Classes\Data\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CreditsForm.h">
+      <Filter>Header Files\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="BookViewPage.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="VolumeCollapsible.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Vpanel.h">
+      <Filter>Header Files\Form\UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EntryPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Windows.cpp">
+      <Filter>Source Files\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="Dimensions.cpp">
+      <Filter>Source Files\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="UserResponse.cpp">
+      <Filter>Source Files\Form\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BookCard.cpp">
+      <Filter>Source Files\Form\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaPage.cpp">
+      <Filter>Source Files\Classes\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Dashboard.cpp">
+      <Filter>Source Files\Form\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Book.cpp">
+      <Filter>Source Files\Classes\Data\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="Volume.cpp">
+      <Filter>Source Files\Classes\Data\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="VTable.cpp">
+      <Filter>Source Files\Classes\Data\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Preferences.cpp">
+      <Filter>Source Files\Classes\Data\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="BookAdd.cpp">
+      <Filter>Source Files\Classes\Data\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceHandler.cpp">
+      <Filter>Source Files\Classes\Data\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="CreditsForm.cpp">
+      <Filter>Source Files\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="VolumeCollapsible.cpp">
+      <Filter>Source Files\Form\UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <_EmbedManagedResourceFile Include="Resx\gfx_AddBookSel.jpg">
+      <Filter>Resource Files\UI</Filter>
+    </_EmbedManagedResourceFile>
+    <_EmbedManagedResourceFile Include="Resx\gfx_AddBookUns.png">
+      <Filter>Resource Files\UI</Filter>
+    </_EmbedManagedResourceFile>
+    <_EmbedManagedResourceFile Include="Resx\icon_assebility.png">
+      <Filter>Resource Files\UI</Filter>
+    </_EmbedManagedResourceFile>
+    <_EmbedManagedResourceFile Include="Resx\icon_settings.png">
+      <Filter>Resource Files\UI</Filter>
+    </_EmbedManagedResourceFile>
+    <_EmbedManagedResourceFile Include="Resx\SupportedSites.png">
+      <Filter>Resource Files</Filter>
+    </_EmbedManagedResourceFile>
+    <_EmbedManagedResourceFile Include="Resx\ww.png">
+      <Filter>Resource Files</Filter>
+    </_EmbedManagedResourceFile>
+    <_EmbedManagedResourceFile Include="Resx\error_NoNovels.png">
+      <Filter>Resource Files</Filter>
+    </_EmbedManagedResourceFile>
+  </ItemGroup>
+</Project>
