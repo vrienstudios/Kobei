@@ -74,17 +74,19 @@ void VolumeCollapsible::GenerateControls()
 
 		list = gcnew System::Windows::Forms::Panel;
 		list->Width = this->Width;
-		list->Height = 300;
-		list->Location = System::Drawing::Point(0, header->Location.Y + 10);
+		list->Height = 500;
+		list->Location = System::Drawing::Point(0, header->Location.Y + header->Height);
 		indexCount++;
 		list->AutoScroll = FALSE;
 		list->HorizontalScroll->Maximum = 0;
+		list->VerticalScroll->Maximum = 0;
 		list->BackColor = System::Drawing::Color::Red;
 		list->HorizontalScroll->Visible = FALSE;
+		list->VerticalScroll->Visible = FALSE;
 		//this->AutoScrollMinSize = System::Drawing::Size(0, 1000);
 		list->AutoScroll = TRUE;
 		list->Visible = FALSE;
-		cbufferY = list->Location.Y;
+		//ShowScrollBar((HWND)list->Handle.ToInt32(), 3, FALSE); - Doesn't work
 		for (unsigned int i = 0; i < Vol->ChapterList->Length(); i++) {
 			VPanel^ chpCard = gcnew VPanel;
 			chpCard->VolChp = TRUE;
@@ -97,6 +99,7 @@ void VolumeCollapsible::GenerateControls()
 			chpCard->Width = list->Width;
 			chpCard->VolChp = TRUE;
 			chpCard->Chp = Chp;
+			chpCard->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &VolumeCollapsible::OnPaint);
 			//chpCard->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &VolumeCollapsible::OnPaint);
 
 			chpCard->Location::set(System::Drawing::Point(0, cbufferY));
@@ -130,6 +133,10 @@ void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::
 		System::Drawing::RectangleF rect = System::Drawing::RectangleF(0, 20, Vpan->Width, Vpan->Height);
 		System::Drawing::Graphics^ graphics = e->Graphics;
 		System::Drawing::StringFormat^ strfm = gcnew System::Drawing::StringFormat();
+		strfm->Trimming = System::Drawing::StringTrimming::None;
+		strfm->LineAlignment = System::Drawing::StringAlignment::Center;
+		strfm->FormatFlags = System::Drawing::StringFormatFlags::NoWrap | System::Drawing::StringFormatFlags::NoClip;
+		System::Console::WriteLine(Vpan->Vol->Name);
 		graphics->DrawString(Vpan->Vol->Name, Vpan->PFont, gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black), rect, strfm);
 		delete graphics;
 		delete strfm;
@@ -139,6 +146,9 @@ void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::
 		System::Drawing::RectangleF rect = System::Drawing::RectangleF(0, 20, Vpan->Width, Vpan->Height);
 		System::Drawing::Graphics^ graphics = e->Graphics;
 		System::Drawing::StringFormat^ strfm = gcnew System::Drawing::StringFormat();
+		strfm->Trimming = System::Drawing::StringTrimming::None;
+		strfm->LineAlignment = System::Drawing::StringAlignment::Center;
+		strfm->FormatFlags = System::Drawing::StringFormatFlags::NoWrap | System::Drawing::StringFormatFlags::NoClip;
 		graphics->DrawString(Vpan->Chp->Name, Vpan->PFont, gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black), rect, strfm);
 		delete graphics;
 		delete strfm;
