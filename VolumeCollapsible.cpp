@@ -67,15 +67,14 @@ void VolumeCollapsible::GenerateControls()
 		header->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &VolumeCollapsible::OnMouseClick);
 		header->OpenClose = FALSE;
 		header->Index = indexCount;
+		indexCount += 2;
 		header->GenerateGraphics();
-		indexCount++;
 		header->Location = System::Drawing::Point(hbufferW, hbufferH);
 		hbufferH += header->Height + 5;
 		list = gcnew System::Windows::Forms::Panel;
 		list->Width = this->Width;
 		list->Location = System::Drawing::Point(0, header->Location.Y + header->Height);
 		list->Height = 100;
-		indexCount++;
 		/*list->AutoScroll = FALSE;
 		list->HorizontalScroll->Maximum = 0;
 		list->VerticalScroll->Maximum = 0;
@@ -105,8 +104,9 @@ void VolumeCollapsible::GenerateControls()
 			chpCard->GenerateGraphics();
 			list->Controls->Add(chpCard);
 		}
+		list->Height = (cbufferY);
+		cbufferY = 0;
 		this->Controls->Add(header);
-		list->Height = (list->Controls->Count * 100) + (300 + (list->Controls->Count + 15));
 		this->Controls->Add(list);
 	}
 	//this->Controls->AddRange(gcnew cli::array<System::Windows::Forms::Control^>{header, list});
@@ -121,11 +121,12 @@ void VolumeCollapsible::AnimateClose(VPanel^& panel)
 
 void VolumeCollapsible::AnimateOpen(VPanel^& panel)
 {
+	System::Console::WriteLine("count: " + this->Controls->Count + "VpanIndex: " + panel->Index);
 	System::Windows::Forms::Panel^ chapterList = safe_cast<System::Windows::Forms::Panel^>(this->Controls[panel->Index + 1]);
 	//this->Controls[panel->Index + 2]->Visible = FALSE;
 	chapterList->Visible = TRUE;
-	for(int idx = 0; idx < this->Controls->Count; idx++)
-
+	for (int idx = panel->Index + 2; idx < this->Controls->Count; idx++)
+		this->Controls[idx]->Location = System::Drawing::Point(0, this->Controls[idx]->Location.Y + chapterList->Height);
 }
 
 void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
