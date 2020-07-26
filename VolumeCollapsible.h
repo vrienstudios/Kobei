@@ -7,7 +7,7 @@ private:
 	VTable^ CollapsibleControls;
 public:
 	void AnimateOpen(VPanel^& panel);
-	void AnimateClose();
+	void AnimateClose(VPanel^& panel);
 	VolumeCollapsible(VTable^ volumeList);
 	VolumeCollapsible(cli::array<Volume^>^ volumeList);
 	void GenerateControls();

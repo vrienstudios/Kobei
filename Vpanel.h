@@ -7,7 +7,7 @@ public:
 	Volume^ Vol;
 	Chapter^ Chp;
 	BOOLEAN VolChp = FALSE;
-	BOOLEAN OpenClose;
+	BOOLEAN OpenClose = FALSE;
 	INT Index;
 
 	System::Drawing::SizeF TextSize;
