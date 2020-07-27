@@ -99,6 +99,7 @@ void VolumeCollapsible::GenerateControls()
 			chpCard->Location::set(System::Drawing::Point(0, cbufferY));
 			cbufferY += chpCard->Height + 5;
 			chpCard->GenerateGraphics();
+			chpCard->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &VolumeCollapsible::CardMouseClick);
 			list->Controls->Add(chpCard);
 		}
 		list->Height = (cbufferY);
@@ -199,4 +200,9 @@ void VolumeCollapsible::OnMouseClick(System::Object^ sender, System::Windows::Fo
 		AnimateClose(vp);
 		break;
 	}
+}
+
+void VolumeCollapsible::CardMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	throw gcnew System::NotImplementedException();
 }

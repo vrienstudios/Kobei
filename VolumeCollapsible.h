@@ -14,4 +14,5 @@ public:
 	void OnPaint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 	void OnScroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e);
 	void OnMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	void CardMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 };
