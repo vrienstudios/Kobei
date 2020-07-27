@@ -8,7 +8,7 @@ public:
 	Chapter^ Chp;
 	BOOLEAN VolChp = FALSE;
 	BOOLEAN OpenClose = FALSE;
-	int Index;
+	INT Index;
 
 	System::Drawing::SizeF TextSize;
 	System::Drawing::Font^ PFont;

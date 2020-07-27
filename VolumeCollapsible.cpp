@@ -89,7 +89,6 @@ void VolumeCollapsible::GenerateControls()
 			VPanel^ chpCard = gcnew VPanel;
 			chpCard->VolChp = TRUE;
 			Chapter^ Chp = safe_cast<Chapter^>(Vol->ChapterList(i, TRUE));
-			std::cout << msclr::interop::marshal_as<std::string>(Chp->Text->ToString());
 
 			chpCard->Width = this->Width;
 			chpCard->BackColor = System::Drawing::Color::Orange;
