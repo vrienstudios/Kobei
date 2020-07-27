@@ -109,6 +109,10 @@ void VolumeCollapsible::GenerateControls()
 	//this->Controls->AddRange(gcnew cli::array<System::Windows::Forms::Control^>{header, list});
 }
 
+/// <summary>
+/// Closes the Chapter list and push all elements after its index up.
+/// </summary>
+/// <param name="panel"></param>
 void VolumeCollapsible::AnimateClose(VPanel^& panel)
 {
 	System::Windows::Forms::Panel^ chapterList = safe_cast<System::Windows::Forms::Panel^>(this->Controls[panel->Index + 1]);
@@ -118,6 +122,10 @@ void VolumeCollapsible::AnimateClose(VPanel^& panel)
 		this->Controls[idx]->Location = System::Drawing::Point(0, this->Controls[idx]->Location.Y - chapterList->Height);
 }
 
+/// <summary>
+/// Open the Chapter list and push all elements after its index down.
+/// </summary>
+/// <param name="panel"></param>
 void VolumeCollapsible::AnimateOpen(VPanel^& panel)
 {
 	System::Windows::Forms::Panel^ chapterList = safe_cast<System::Windows::Forms::Panel^>(this->Controls[panel->Index + 1]);
@@ -127,6 +135,11 @@ void VolumeCollapsible::AnimateOpen(VPanel^& panel)
 		this->Controls[idx]->Location = System::Drawing::Point(0, this->Controls[idx]->Location.Y + chapterList->Height);
 }
 
+/// <summary>
+/// Chooses what type to draw to screen.
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
 void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
 	VPanel^ Vpan = safe_cast<VPanel^>(sender);
@@ -158,13 +171,21 @@ void VolumeCollapsible::OnPaint(System::Object^ sender, System::Windows::Forms::
 	}
 }
 
-
+/// <summary>
+/// This serves no purpose.
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
 void VolumeCollapsible::OnScroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e)
 {
 	this->VerticalScroll->Value = safe_cast<System::Windows::Forms::VScrollBar^>(sender)->Value;
 }
 
-
+/// <summary>
+/// Choose whether to call the close or open functions.
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
 void VolumeCollapsible::OnMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	VPanel^ vp = safe_cast<VPanel^>(sender);

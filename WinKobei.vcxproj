@@ -182,6 +182,7 @@
     <ClInclude Include="BookViewPage.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Chapter.h" />
+    <ClInclude Include="ChapterViewer.h" />
     <ClInclude Include="CreditsForm.h" />
     <ClInclude Include="Dashboard.h" />
     <ClInclude Include="Dimensions.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookAdd.cpp" />
     <ClCompile Include="BookCard.cpp" />
+    <ClCompile Include="ChapterViewer.cpp" />
     <ClCompile Include="CreditsForm.cpp" />
     <ClCompile Include="Dashboard.cpp" />
     <ClCompile Include="Dimensions.cpp" />
