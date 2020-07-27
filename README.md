@@ -4,12 +4,12 @@ Easily convert online novels/books to Epubs/PDF's, or just read them on your des
 
 # Features
 
-1| Download a webnovel from most websites.
+1| Download a webnovel from most websites. (listed sites only atm)
 
 2| Convert said webnovel to Epub or PDF (coming)
 
-3| Read webnovels through the application itself.
+3| Read webnovels through the application itself. (coming)
 
-4| Annotate and color text within any chapter for future use.
+4| Annotate and color text within any chapter for future use. (coming)
 
-5| Create notes and entire "character pages" relating to the book.
+5| Create notes and entire "character pages" relating to the book. (coming)
