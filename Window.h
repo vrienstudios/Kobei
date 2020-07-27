@@ -7,6 +7,7 @@
 #include "Includes.h"
 #include "panel.h"
 #include "CreditsForm.h"
+#include "BookCard.h"
 
 ref class Window {
 private:
@@ -71,6 +72,7 @@ private:
 
 	int LoadBooks();
 	System::String^ GetBookDirectory();
+	BookCard^ currentBook;
 
 public:
 	// Constructor and destructor.
@@ -93,4 +95,13 @@ public:
 	void CardClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 	void OnOpen(System::Object^ sender, System::EventArgs^ e);
 	void OnUpdateCLClick(System::Object^ sender, System::EventArgs^ e);
+
+	//Threading
+	void LoadNovelAsync();
+
+	//Threading Delagates
+	delegate void SetSelectedIndex(int index);
+	void SetTabControlSelectedIndex(int index) {
+		tabControl->SelectedIndex = index;
+	}
 };

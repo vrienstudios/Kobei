@@ -6,14 +6,12 @@ VolumeCollapsible::VolumeCollapsible(VTable^ volumeList)
 {
 	if (volumeList->Length() == 0) {
 		std::exception("Error occurred");
-		std::cout << "ER" << std::endl;
 	}
 	Volumes = volumeList;
 	CollapsibleControls = gcnew VTable(System::Windows::Forms::Panel::typeid);
 
 	this->AutoScroll = TRUE;
 	this->Visible = true;
-	std::cout << "ER" << std::endl; std::cout << "ER" << std::endl;
 	GenerateControls();
 }
 

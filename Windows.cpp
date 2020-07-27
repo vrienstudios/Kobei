@@ -7,6 +7,7 @@
 #include "BookAddForm.h"
 #include "CreditsForm.h"
 #include "VolumeCollapsible.h"
+#include <thread>
 
 Window::Window(unsigned int w, unsigned int h) : Form(gcnew System::Windows::Forms::Form) {
 	windowDimension->operator()(w, h);
@@ -438,20 +439,9 @@ void Window::ShowCredits(System::Object^ sender, System::EventArgs^ e)
 void Window::CardClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	if (e->Button != System::Windows::Forms::MouseButtons::Right) {
-		Book^ b = safe_cast<BookCard^>(sender)->AttachedBook;
-		b->VolumeUpdate();
-		VolumeCollapsible^ volCol = gcnew VolumeCollapsible(b->Volumes);
-		volCol->AutoScroll = FALSE;
-		std::cout << "T";
-		//volCol->Controls->Clear();
-		volCol->Dock = System::Windows::Forms::DockStyle::Fill;
-		volCol->Width = bookViewPage->Width;
-		volCol->Height = bookViewPage->Height;
-		volCol->Controls->Clear();
-		volCol->GenerateControls();
-		bookViewPage->Controls->Add(volCol);
-		volCol->BackColor = System::Drawing::Color::Blue;
-		tabControl->SelectedIndex = 3;
+		currentBook = safe_cast<BookCard^>(sender);
+		System::Threading::Thread^ thread = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &Window::LoadNovelAsync));
+		thread->Start();
 	}
 }
 
@@ -498,4 +488,24 @@ void Window::OnUpdateCLClick(System::Object^ sender, System::EventArgs^ e)
 
 	safe_cast<BookCard^>(sender)->AttachedBook->numChapters = chapters;
 	safe_cast<BookCard^>(sender)->AttachedBook->Update();
+}
+
+void Window::LoadNovelAsync()
+{
+		Book^ b = currentBook->AttachedBook;
+		b->VolumeUpdate();
+		VolumeCollapsible^ volCol = gcnew VolumeCollapsible(b->Volumes);
+		volCol->AutoScroll = FALSE;
+		//volCol->Controls->Clear();
+		volCol->Dock = System::Windows::Forms::DockStyle::Fill;
+		volCol->Width = bookViewPage->Width;
+		volCol->Height = bookViewPage->Height;
+		volCol->Controls->Clear();
+		volCol->GenerateControls();
+		bookViewPage->Controls->Add(volCol);
+		volCol->BackColor = System::Drawing::Color::Blue;
+		SetSelectedIndex^ d = gcnew SetSelectedIndex(this, &Window::SetTabControlSelectedIndex);
+		tabControl->Invoke(d, gcnew cli::array<System::Object^> {3});
+		delete d;
+		return;
 }
