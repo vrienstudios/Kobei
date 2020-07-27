@@ -507,5 +507,6 @@ void Window::LoadNovelAsync()
 		SetSelectedIndex^ d = gcnew SetSelectedIndex(this, &Window::SetTabControlSelectedIndex);
 		tabControl->Invoke(d, gcnew cli::array<System::Object^> {3});
 		delete d;
+		delete b;
 		return;
 }
