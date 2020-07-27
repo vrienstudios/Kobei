@@ -117,11 +117,12 @@ void VolumeCollapsible::AnimateClose(VPanel^& panel)
 	System::Windows::Forms::Panel^ chapterList = safe_cast<System::Windows::Forms::Panel^>(this->Controls[panel->Index + 1]);
 	//this->Controls[panel->Index + 2]->Visible = FALSE;
 	chapterList->Visible = FALSE;
+	for (int idx = this->Controls->Count - 1; idx > panel->Index + 1; idx--)
+		this->Controls[idx]->Location = System::Drawing::Point(0, this->Controls[idx]->Location.Y - chapterList->Height);
 }
 
 void VolumeCollapsible::AnimateOpen(VPanel^& panel)
 {
-	System::Console::WriteLine("count: " + this->Controls->Count + "VpanIndex: " + panel->Index);
 	System::Windows::Forms::Panel^ chapterList = safe_cast<System::Windows::Forms::Panel^>(this->Controls[panel->Index + 1]);
 	//this->Controls[panel->Index + 2]->Visible = FALSE;
 	chapterList->Visible = TRUE;
