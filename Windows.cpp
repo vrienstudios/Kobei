@@ -175,7 +175,7 @@ int Window::PageGeneration() {
 	SideBar->MouseLeave += gcnew System::EventHandler(this, &Window::SideBarLeave);
 
 	toolStripButton1->Click += gcnew System::EventHandler(this, &Window::ShowCredits);
-
+	// git test
 	HomePageGeneration();
 	tabControl->TabPages->Add(homePage);
 	AddPageGeneration();
