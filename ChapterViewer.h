@@ -12,8 +12,8 @@ public:
 		delete chapterBuffer;
 	}
 
-	delegate void EventHandler(System::Object^ sender, System::EventArgs^ e);
-	virtual void ExecuteEvent(System::Object^ sender, System::EventArgs^ e, unsigned int i);
+	delegate void EventHandler(ChapterView^& sender, System::EventArgs^ e);
+	virtual void ExecuteEvent(ChapterView^ sender, System::EventArgs^ e, unsigned int i);
 	event EventHandler^ OnOpen;
 
 	property bool openFlag {

@@ -14,7 +14,7 @@ ChapterView::ChapterView(Chapter^ chp)
 	this->Controls->Add(rtb);
 }
 
-void ChapterView::ExecuteEvent(System::Object^ sender, System::EventArgs^ e, unsigned int i)
+void ChapterView::ExecuteEvent(ChapterView^ sender, System::EventArgs^ e, unsigned int i)
 {
 	switch (i) {
 	case 0:
