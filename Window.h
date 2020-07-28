@@ -73,6 +73,7 @@ private:
 	int LoadBooks();
 	System::String^ GetBookDirectory();
 	BookCard^ currentBook;
+	Chapter^ currentChapter;
 
 public:
 	// Constructor and destructor.
