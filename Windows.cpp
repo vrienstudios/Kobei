@@ -501,6 +501,7 @@ void Window::LoadNovelAsync()
 		volCol->Height = bookViewPage->Height;
 		volCol->Controls->Clear();
 		volCol->GenerateControls();
+		volCol->TriggerChapterOpen += gcnew VolumeCollapsible::EventHandler(this, &Window::OnTriggerChapterOpen);
 		bookViewPage->Controls->Add(volCol);
 		volCol->BackColor = System::Drawing::Color::Blue;
 		SetSelectedIndex^ d = gcnew SetSelectedIndex(this, &Window::SetTabControlSelectedIndex);
@@ -508,4 +509,9 @@ void Window::LoadNovelAsync()
 		delete d;
 		delete b;
 		return;
+}
+
+void Window::OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter)
+{
+	throw gcnew System::NotImplementedException();
 }

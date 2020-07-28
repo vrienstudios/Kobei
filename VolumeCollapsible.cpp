@@ -204,5 +204,11 @@ void VolumeCollapsible::OnMouseClick(System::Object^ sender, System::Windows::Fo
 
 void VolumeCollapsible::CardMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
-	throw gcnew System::NotImplementedException();
+	selChapter = safe_cast<VPanel^>(sender)->Chp;
+	ChapterFlag = FALSE;
+}
+
+void VolumeCollapsible::ExecuteEvent(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter)
+{
+	TriggerChapterOpen(sender, e, i, chapter);
 }

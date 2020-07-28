@@ -104,4 +104,5 @@ public:
 	void SetTabControlSelectedIndex(int index) {
 		tabControl->SelectedIndex = index;
 	}
+	void OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter);
 };
