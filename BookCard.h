@@ -39,6 +39,12 @@ public:
 		}
 	};
 
+	property bool SendCardClickEvent {
+		void set(bool value) {
+			CardClick();
+		}
+	};
+
 	delegate void OpenHandler(System::Object^ sender, System::EventArgs^ e);
 	Book^ AttachedBook;
 
@@ -46,6 +52,9 @@ public:
 	event OpenHandler^ OnDelete;
 	event OpenHandler^ OnUpdateCLClick;
 	event OpenHandler^ OnUpdateNClick;
+
+	delegate void CardHandler(BookCard^ sender);
+	event CardHandler^ OnCardClick;
 
 	int bookIndex;
 	bool CoverOnly;
@@ -59,4 +68,8 @@ public:
 	void UpdateChapterListBook(System::Object^ sender, System::EventArgs^ e);
 
 	virtual void openFire(System::Object^ sender, System::EventArgs^ e, unsigned int i);
+
+	virtual void CardClick() {
+		OnCardClick(this);
+	}
 };
