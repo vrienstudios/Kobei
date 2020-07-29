@@ -21,4 +21,16 @@ public:
 			ExecuteEvent(this, System::EventArgs::Empty, 0);
 		}
 	};
+
+	property bool ForwardFlag {
+		void set(bool value) {
+			ExecuteEvent(this, System::EventArgs::Empty, 1);
+		}
+	};
+
+	property bool BackFlag {
+		void set(bool value) {
+			ExecuteEvent(this, System::EventArgs::Empty, 2);
+		}
+	};
 };
