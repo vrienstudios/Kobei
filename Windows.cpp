@@ -227,7 +227,7 @@ int Window::HomePageGeneration() {
 
 	}*/
 	int tLength = 80;
-	int tYSET = 0;
+	int tYSET = 20; // initial offset
 	System::Windows::Forms::PictureBox^ err;
 	switch (BookTable->Length() > 0) {
 	case 0: {
