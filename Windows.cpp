@@ -187,6 +187,8 @@ int Window::PageGeneration() {
 	tabControl->TabPages->Add(emailSupportPage);
 	AboutPageGeneration();
 	tabControl->TabPages->Add(aboutPage);
+	ChaperPageGeneration();
+	tabControl->TabPages->Add(chapterDetailView);
 
 	Form->Controls->Add(toolStrip1);
 	Form->Controls->Add(SideBar);
@@ -331,6 +333,24 @@ int Window::AboutPageGeneration() {
 	aboutPage->TabIndex = 5;
 
 	return -1;
+}
+
+int Window::ChaperPageGeneration()
+{
+	if (currentChapter == nullptr) {
+		chapterDetailView = gcnew System::Windows::Forms::TabPage;
+		chapterDetailView->TabIndex = 6;
+		return -1;
+	}
+	else
+		chapterDetailView->Controls->Clear();
+
+	chapterDetailView->BackColor = System::Drawing::Color::Red;
+	chapterDetailView->Dock = System::Windows::Forms::DockStyle::Fill;
+	ChapterView^ chapviewer = gcnew ChapterView(currentChapter);
+	chapviewer->Dock = System::Windows::Forms::DockStyle::Fill;
+	chapterDetailView->Controls->Add(chapviewer);
+	return 0;
 }
 
 int Window::Create() {
@@ -513,5 +533,7 @@ void Window::LoadNovelAsync()
 
 void Window::OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter)
 {
-	throw gcnew System::NotImplementedException();
+	currentChapter = chapter;
+	ChaperPageGeneration();
+	tabControl->SelectedIndex = 6;
 }

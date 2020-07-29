@@ -8,6 +8,9 @@
 #include "panel.h"
 #include "CreditsForm.h"
 #include "BookCard.h"
+#include "Volume.h"
+#include "VolumeCollapsible.h"
+#include "ChapterViewer.h"
 
 ref class Window {
 private:
@@ -31,6 +34,7 @@ private:
 	System::Windows::Forms::TabPage^ bookViewPage;
 	System::Windows::Forms::TabPage^ emailSupportPage;
 	System::Windows::Forms::TabPage^ aboutPage;
+	System::Windows::Forms::TabPage^ chapterDetailView;
 
 	// Buttons //
 	//SideBar Buttons
@@ -69,6 +73,8 @@ private:
 	int BookViewPageGeneration();
 	int EmailSupportPageGeneration();
 	int AboutPageGeneration();
+	int ChaperPageGeneration();
+
 
 	int LoadBooks();
 	System::String^ GetBookDirectory();
