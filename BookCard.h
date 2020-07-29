@@ -72,4 +72,5 @@ public:
 	virtual void CardClick() {
 		OnCardClick(this);
 	}
+	void OnClick(System::Object^ sender, System::EventArgs^ e);
 };

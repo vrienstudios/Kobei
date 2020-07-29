@@ -38,6 +38,13 @@ BookCard::BookCard(Book^ book, bool coveronly)
 		ChaptersRead = gcnew System::Windows::Forms::Label;
 		PercentageRead = gcnew System::Windows::Forms::Label;
 
+		Title->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
+		Author->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
+		Chapters->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
+		ChaptersRead->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
+		PercentageRead->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
+		Cover->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
+
 		Title->Text = "Title: " + book->Title;
 		if (book->Author == nullptr)
 			Author->Text = "Author: null";
@@ -174,4 +181,9 @@ void BookCard::openFire(System::Object^ sender, System::EventArgs^ e, unsigned i
 		OnUpdateCLClick(sender, e);
 		break;
 	}
+}
+
+void BookCard::OnClick(System::Object^ sender, System::EventArgs^ e)
+{
+	CardClick();
 }

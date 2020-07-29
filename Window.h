@@ -81,6 +81,8 @@ private:
 	BookCard^ currentBook;
 	Chapter^ currentChapter;
 
+	System::Void DownloadBookPrompt();
+
 public:
 	// Constructor and destructor.
 	Window(unsigned int w, unsigned int h);	
@@ -94,12 +96,15 @@ public:
 	int Show();
 	int Hide();
 
+	//Events
+	void OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter);
+	void FromUriClick(System::Object^ sender, System::EventArgs^ e);
 	void OnSelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
 	void ShowSideBarMouseEnter(System::Object^ sender, System::EventArgs^ e);
 	void BookAddOnClick(System::Object^ sender, System::EventArgs^ e);
 	void SideBarLeave(System::Object^ sender, System::EventArgs^ e);
 	void ShowCredits(System::Object^ sender, System::EventArgs^ e);
-	void CardClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+	void CardClick(BookCard^ sender);
 	void OnOpen(System::Object^ sender, System::EventArgs^ e);
 	void OnUpdateCLClick(System::Object^ sender, System::EventArgs^ e);
 
@@ -108,9 +113,26 @@ public:
 
 	//Threading Delagates
 	delegate void SetSelectedIndex(int index);
+	delegate void SetDock(System::Windows::Forms::DockStyle dockstyle);
+	delegate void AddControls(System::Windows::Forms::Control^ control);
+	delegate void ClearControls();
+
+	//TabControl
 	void SetTabControlSelectedIndex(int index) {
 		tabControl->SelectedIndex = index;
 	}
-	void OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter);
-	void FromUriClick(System::Object^ sender, System::EventArgs^ e);
+
+	//Homepage
+	void SetHomePageDockStyle(System::Windows::Forms::DockStyle dockstyle) {
+		homePage->Dock::set(dockstyle);
+	}
+	void SetHomePageTabPageIndex(int index) {
+		homePage->TabIndex = index;
+	}
+	void AddHomePageControl(System::Windows::Forms::Control^ control) {
+		homePage->Controls->Add(control);
+	}
+	void ClearHomePageControls() {
+		homePage->Controls->Clear();
+	}
 };
