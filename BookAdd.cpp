@@ -294,6 +294,9 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 
 }
 
+// Multi threading for this will come much further down the road. It would require me to rewrite this.
+// I plan on splitting each Volume between a pool of threads. E.x one volume ~129 chapters would get one thread while another ~200 chapters would also get one.
+// This will do away with sequential downloads.
 BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	System::Net::WebClient^ wc = gcnew System::Net::WebClient;
 

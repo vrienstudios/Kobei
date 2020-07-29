@@ -113,6 +113,7 @@ int Window::PageGeneration() {
 	fromUriToolStripMenuItem->Name = "fromUriToolStripMenuItem";
 	fromUriToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 	fromUriToolStripMenuItem->Text = "From Uri";
+	fromUriToolStripMenuItem->Click += gcnew System::EventHandler(this, &Window::FromUriClick);
 	fromFolderToolStripMenuItem->Name = "fromFolderToolStripMenuItem";
 	fromFolderToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 	fromFolderToolStripMenuItem->Text = "From Folder";
@@ -422,23 +423,11 @@ void Window::OnSelectedIndexChanged(System::Object^ sender, System::EventArgs^ e
 	//throw gcnew System::NotImplementedException();
 }
 
-
-
 void Window::ShowSideBarMouseEnter(System::Object^ sender, System::EventArgs^ e)
 {
 	SideBar->Visible = true;
 	//ShowSideBar->Visible = false;
 }
-
-
-void Window::BookAddOnClick(System::Object^ sender, System::EventArgs^ e)
-{
-	Book^ b = BookAddForm::GetBook(TRUE);
-	delete homePage;
-	HomePageGeneration();
-	//throw gcnew System::NotImplementedException();
-}
-
 
 void Window::SideBarLeave(System::Object^ sender, System::EventArgs^ e)
 {
@@ -536,4 +525,20 @@ void Window::OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ 
 	currentChapter = chapter;
 	ChaperPageGeneration();
 	tabControl->SelectedIndex = 6;
+}
+
+
+void Window::FromUriClick(System::Object^ sender, System::EventArgs^ e)
+{
+	Book^ b = BookAddForm::GetBook(TRUE);
+	delete homePage;
+	HomePageGeneration();
+}
+
+void Window::BookAddOnClick(System::Object^ sender, System::EventArgs^ e)
+{
+	Book^ b = BookAddForm::GetBook(TRUE);
+	delete homePage;
+	HomePageGeneration();
+	//throw gcnew System::NotImplementedException();
 }

@@ -112,4 +112,5 @@ public:
 		tabControl->SelectedIndex = index;
 	}
 	void OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter);
+	void FromUriClick(System::Object^ sender, System::EventArgs^ e);
 };
