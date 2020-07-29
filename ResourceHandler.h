@@ -2,11 +2,12 @@
 
 ref class Resources {
 private:
-	System::Reflection::Assembly^ assembly;
-	System::IO::Stream^ stream;
-
-	Resources();
-	~Resources();
+	static System::Reflection::Assembly^ assembly;
+	static System::IO::Stream^ stream;
+	//Resources();
+	//~Resources();
 public:
-	System::Object^ GetObject(System::String^ resourceName);
+	static void LoadResourceSystem();
+	static void DisposeResourceSystem();
+	static System::IO::Stream^ GetObject(System::String^ resourceName);
 };

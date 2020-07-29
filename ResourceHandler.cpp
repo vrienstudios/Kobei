@@ -1,16 +1,18 @@
 #include "ResourceHandler.h"
 
-Resources::Resources() {
-	throw gcnew System::NotImplementedException();
+void Resources::LoadResourceSystem() {
+	assembly = System::Reflection::Assembly::GetExecutingAssembly();
+	return;
 }
 
-Resources::~Resources() {
+void Resources::DisposeResourceSystem() {
 	delete assembly;
 	delete stream;
+	return;
 }
 
-System::Object^ Resources::GetObject(System::String^ resourceName)
+System::IO::Stream^ Resources::GetObject(System::String^ resourceName)
 {
-	throw gcnew System::NotImplementedException();
-	// TODO: insert return statement here
+	stream = assembly->GetManifestResourceStream(resourceName);
+	return stream;
 }

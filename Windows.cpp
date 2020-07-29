@@ -8,6 +8,7 @@
 #include "CreditsForm.h"
 #include "VolumeCollapsible.h"
 #include <thread>
+#include "ResourceHandler.h"
 
 Window::Window(unsigned int w, unsigned int h) : Form(gcnew System::Windows::Forms::Form) {
 	windowDimension->operator()(w, h);
@@ -38,6 +39,8 @@ Window::~Window() {
 int Window::PageGeneration() {
 	Form->SuspendLayout();
 	
+	Resources::LoadResourceSystem();
+
 	toolStripDropDownButton1 = gcnew System::Windows::Forms::ToolStripDropDownButton();
 	importKTFBookToolStripMenuItem = gcnew System::Windows::Forms::ToolStripMenuItem();
 	exportAsKTFBookToolStripMenuItem = gcnew System::Windows::Forms::ToolStripMenuItem();
@@ -223,10 +226,6 @@ int Window::HomePageGeneration() {
 	catch (...) {
 
 	}*/
-	System::Reflection::Assembly^ assembly = System::Reflection::Assembly::GetExecutingAssembly();
-
-	System::IO::Stream^ stream = assembly->GetManifestResourceStream("error_NoNovels.png");
-
 	int tLength = 80;
 	int tYSET = 0;
 	System::Windows::Forms::PictureBox^ err;
@@ -234,7 +233,7 @@ int Window::HomePageGeneration() {
 	case 0: {
 		err = gcnew System::Windows::Forms::PictureBox;
 		err->Dock = System::Windows::Forms::DockStyle::Fill;
-		err->Image = System::Drawing::Bitmap::FromStream(stream);
+		err->Image = System::Drawing::Bitmap::FromStream(Resources::GetObject("error_NoNovels.png"));
 		err->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		err->Click += gcnew System::EventHandler(this, &Window::BookAddOnClick);
 		homePage->Controls->Add(err);
@@ -248,8 +247,7 @@ int Window::HomePageGeneration() {
 
 		System::Windows::Forms::Panel^ UpdateBox = gcnew System::Windows::Forms::Panel;
 		System::Windows::Forms::PictureBox^ pic = gcnew System::Windows::Forms::PictureBox;
-		stream = assembly->GetManifestResourceStream("SupportedSites.png");
-		pic->Image = gcnew System::Drawing::Bitmap(stream);
+		pic->Image = System::Drawing::Bitmap::FromStream(Resources::GetObject("SupportedSites.png"));
 		pic->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 		pic->Dock = System::Windows::Forms::DockStyle::Fill;
 		UpdateBox->Controls->Add(pic);

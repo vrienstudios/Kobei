@@ -60,8 +60,6 @@ void VTable::CreateKeyValuePairs(System::Object^ key, System::Object^ item) {
 	accessors = gcnew cli::array<System::Object^>(1);
 	accessors[0] = key;
 
-	std::cout << "E3: " << msclr::interop::marshal_as<std::string>(objects[0]->ToString()) << std::endl;
-
 	objects = gcnew cli::array<System::Object^>(1);
 	objects[0] = item;
 }
@@ -79,10 +77,8 @@ void VTable::AddKeyValuePairs(System::Object^ key, System::Object^ item) {
 	tempArray[tempArray->Length - 1] = item;
 	
 	objects = tempArray;
-	std::cout << "EE: " << msclr::interop::marshal_as<std::string>(objects[0]->ToString()) << std::endl;
 
 	tempArray = gcnew cli::array<System::Object^>(accessors->Length + 1);
-	std::cout << "EE: " << msclr::interop::marshal_as<std::string>(objects[0]->ToString()) << std::endl;
 
 	for (int idx = 0; idx < tLength; idx++) {
 		tempArray[idx] = accessors[idx];
@@ -93,9 +89,6 @@ void VTable::AddKeyValuePairs(System::Object^ key, System::Object^ item) {
 	accessors = tempArray;
 
 	delete tempArray;
-
-	std::cout << "EE1: " << msclr::interop::marshal_as<std::string>(objects[0]->ToString()) << std::endl;
-
 }
 
 // Add object to array.
