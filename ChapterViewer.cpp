@@ -7,11 +7,13 @@ ChapterView::ChapterView(Chapter^ chp)
 	chapterBuffer->Add(1, chp);
 	chapterBuffer->Add(2, chp);
 	rtb = gcnew System::Windows::Forms::RichTextBox;
+	rtb->Font = gcnew System::Drawing::Font("Arial", 12);
 	rtb->Multiline = true;
 	rtb->Dock = System::Windows::Forms::DockStyle::Fill;
+	rtb->WordWrap = true;
 	rtb->Text += "\n\n";
 	rtb->Text += safe_cast<Chapter^>(chapterBuffer(1))->Name + "\n\n";
-	rtb->AppendText(safe_cast<Chapter^>(chapterBuffer(1))->Text);
+	rtb->Text += (safe_cast<Chapter^>(chapterBuffer(1))->Text->ToString()->Replace('\r', ' '));
 	this->Controls->Add(rtb);
 }
 
