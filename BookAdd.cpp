@@ -327,7 +327,9 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	node = WuxiaWorld->getElementById("intro");
 
 	//Initialize book with that information
-	B = gcnew Book(nullptr, mainArgs[0], mainArgs[1]->Substring(7), mainArgs[3]->Substring(11));
+	std::string btitle = msclr::interop::marshal_as<std::string>(mainArgs[1]->Substring(7));
+	B = gcnew Book(nullptr, mainArgs[0], msclr::interop::marshal_as<System::String^>(btitle.substr(0, btitle.length() - (Functions::CountFollowingWhiteSpace(btitle, 0)))), mainArgs[3]->Substring(11));
+	btitle.clear();
 	B->Summary = node->innerHTML;
 	//Honestly, fuck windows and backslash.
 	sprintf_s(sprintBuffer, "%s\\Books\\%s\\%s.jpg", Preferences::GetBookDirectory().c_str(), msclr::interop::marshal_as<std::string>(B->Title->ToString()).c_str(), msclr::interop::marshal_as<std::string>(B->Title->ToString()).c_str());
