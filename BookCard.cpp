@@ -30,7 +30,7 @@ BookCard::BookCard(Book^ book, bool coveronly)
 	this->Height = 200;
 	this->Width = 300;
 	this->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-
+	this->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
 	if (coveronly == false) {
 		Title = gcnew System::Windows::Forms::Label;
 		Author = gcnew System::Windows::Forms::Label;
