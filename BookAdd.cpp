@@ -294,6 +294,11 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 
 }
 
+void BookAddForm::EnumerateWebBoxNovel(System::Collections::IEnumerator^ enumerable, BOOL downloadChapter, unsigned int length)
+{
+	throw gcnew System::NotImplementedException();
+}
+
 // Multi threading for this will come much further down the road. It would require me to rewrite this.
 // I plan on splitting each Volume between a pool of threads. E.x one volume ~129 chapters would get one thread while another ~200 chapters would also get one.
 // This will do away with sequential downloads.
@@ -376,6 +381,11 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	return true;
 }
 
+BOOL BookAddForm::DownloadFromBoxNovel()
+{
+	return 0;
+}
+
 void BookAddForm::LoadBookFromUri() {
 	System::String^ Host = Uri;
 
@@ -405,6 +415,8 @@ void BookAddForm::LoadBookFromUri() {
 		throw std::exception("unrecogonized host ec: 349");
 	case Functions::SwitchString("wuxiaworld"):
 		DownloadFromWuxiaWorld();
+		break;
+	case Functions::SwitchString("boxnovel"):
 		break;
 	}
 }
@@ -438,4 +450,10 @@ System::String^ BookAddForm::WWDownloadChapterContent(Chapter^ Chp)
 		System::Console::WriteLine("Node was null, URL: {0}", Chp->Uri);
 		return nullptr;
 	}
+}
+
+System::String^ BookAddForm::BNDownloadChapterContent(Chapter^ Chp)
+{
+	throw gcnew System::NotImplementedException();
+	// TODO: insert return statement here
 }

@@ -39,9 +39,6 @@ public:
 
 	static void LoadBookFromUri();
 
-	static void EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOOL downloadChapter, unsigned int length);
-	static System::String^ WWDownloadChapterContent(Chapter^ Chp);
-
 	static void ExportVolumeExChapter(Volume^ volume);
 	static void ExportChapterSingular(Chapter^ chapter);
 	static void ExportVolumeFull(Volume^ volume);
@@ -49,4 +46,10 @@ public:
 	static std::string StripAZ(std::string s);
 
 	static BOOL DownloadFromWuxiaWorld();
+	static void EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOOL downloadChapter, unsigned int length);
+	static System::String^ WWDownloadChapterContent(Chapter^ Chp);
+
+	static BOOL DownloadFromBoxNovel();
+	static void EnumerateWebBoxNovel(System::Collections::IEnumerator^ enumerable, BOOL downloadChapter, unsigned int length);
+	static System::String^ BNDownloadChapterContent(Chapter^ Chp);
 };
