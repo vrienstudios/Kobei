@@ -37,13 +37,13 @@ BookCard::BookCard(Book^ book, bool coveronly)
 		Chapters = gcnew System::Windows::Forms::Label;
 		ChaptersRead = gcnew System::Windows::Forms::Label;
 		PercentageRead = gcnew System::Windows::Forms::Label;
-
-		Title->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
-		Author->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
-		Chapters->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
-		ChaptersRead->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
-		PercentageRead->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
-		Cover->Click += gcnew System::EventHandler(this, &BookCard::OnClick);
+		
+		Title->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BookCard::OnMouseClick);
+		Author->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BookCard::OnMouseClick);
+		Chapters->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BookCard::OnMouseClick);
+		ChaptersRead->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BookCard::OnMouseClick);
+		PercentageRead->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BookCard::OnMouseClick);
+		Cover->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &BookCard::OnMouseClick);
 
 		Title->Text = "Title: " + book->Title;
 		if (book->Author == nullptr)
@@ -67,11 +67,11 @@ BookCard::BookCard(Book^ book, bool coveronly)
 		Title->Width = this->Width - Cover->Width;
 		Title->Height = 30;
 		Title->Location::set(System::Drawing::Point(Cover->Width + 5, 20));
-
+		
 		int tw =  Title->DisplayRectangle.Width - 3;
 		int th = Title->DisplayRectangle.Height - 3;
 
-		System::Drawing::Graphics^ graphics = Title->CreateGraphics();
+		System::Drawing::Graphics^ graphics = this->CreateGraphics();
 		System::Drawing::Font^ tFont;
 		System::Drawing::SizeF Size;
 		// 1 is minimum 30 is maximum size
@@ -86,7 +86,7 @@ BookCard::BookCard(Book^ book, bool coveronly)
 
 		Author->Height = 20;
 		Author->Width = Title->Width;
-		 
+		
 		tw = Author->DisplayRectangle.Width - 3;
 		th = Author->DisplayRectangle.Height - 3;
 
@@ -102,7 +102,7 @@ BookCard::BookCard(Book^ book, bool coveronly)
 
 		Chapters->Height = 20;
 		Chapters->Width = Title->Width;
-
+		
 		tw = Chapters->DisplayRectangle.Width - 3;
 		th = Chapters->DisplayRectangle.Height - 3;
 
@@ -132,8 +132,9 @@ BookCard::BookCard(Book^ book, bool coveronly)
 				break;
 			}
 		}
+	
 		PercentageRead->Location::set(System::Drawing::Point(Title->Location.X, Chapters->Location.Y + PercentageRead->Height));
-
+		
 		this->Controls->AddRange(gcnew cli::array<System::Windows::Forms::Control^>{Cover, Title, Author, Chapters, PercentageRead});
 	}
 	else {
@@ -185,5 +186,13 @@ void BookCard::openFire(System::Object^ sender, System::EventArgs^ e, unsigned i
 
 void BookCard::OnClick(System::Object^ sender, System::EventArgs^ e)
 {
+	
 	CardClick();
+}
+
+
+void BookCard::OnMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	if (e->Button == System::Windows::Forms::MouseButtons::Left)
+		CardClick();
 }

@@ -37,6 +37,8 @@ Window::~Window() {
 
 // Initialize everything and general setup. Main Window
 int Window::PageGeneration() {
+	pl = 80;
+	ph = 20;
 	Form->SuspendLayout();
 	
 	Resources::LoadResourceSystem();
@@ -258,30 +260,10 @@ int Window::HomePageGeneration() {
 			break;
 		}
 		case 1: {
-			AddControls^ addCo = gcnew AddControls(this, &Window::AddHomePageControl);
+			CreateBookCard^ addCo = gcnew CreateBookCard(this, &Window::AddBookCard);
 			for (unsigned int idx = 0; idx < BookTable->Length(); idx++)
 			{
-				BookCard^ bc = gcnew BookCard(safe_cast<Book^>(BookTable(idx, true)), false);
-				bc->bookIndex = idx;
-
-				if (idx == 0) {
-					bc->Location = System::Drawing::Point(tLength, tYSET);
-				}
-				else {
-					tLength += bc->Width + 5;
-
-					if (tLength > Form->Width - bc->Width) {
-						tLength = 80;
-						tYSET += bc->Height + 5;
-					}
-
-					bc->Location = System::Drawing::Point(tLength, tYSET);
-				}
-
-				bc->OnOpen += gcnew BookCard::OpenHandler(this, &Window::OnOpen);
-				bc->OnUpdateCLClick += gcnew BookCard::OpenHandler(this, &Window::OnUpdateCLClick);
-				bc->OnCardClick += gcnew BookCard::CardHandler(this, &Window::CardClick);
-				homePage->Invoke(addCo, bc);
+				homePage->Invoke(addCo, safe_cast<Book^>(BookTable(idx, true)), idx);
 			}
 			delete addCo;
 			break;

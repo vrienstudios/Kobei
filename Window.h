@@ -14,7 +14,8 @@
 
 ref class Window {
 private:
-	
+	int pl;
+	int ph;
 	VTable^ BookTable;
 
 	// Window width and height.
@@ -115,6 +116,7 @@ public:
 	delegate void SetSelectedIndex(int index);
 	delegate void SetDock(System::Windows::Forms::DockStyle dockstyle);
 	delegate void AddControls(System::Windows::Forms::Control^ control);
+	delegate void CreateBookCard(Book^ b, unsigned int i);
 	delegate void ClearControls();
 
 	//TabControl
@@ -132,7 +134,27 @@ public:
 	void AddHomePageControl(System::Windows::Forms::Control^ control) {
 		homePage->Controls->Add(control);
 	}
+	void AddBookCard(Book^ b, unsigned int i) {
+		BookCard^ bc = gcnew BookCard(b, false);
+		bc->bookIndex = i;
 
+		if (i == 0) {
+			bc->Location = System::Drawing::Point(pl, ph);
+		}
+		else {
+			pl += bc->Width + 5;
+			if (pl > Form->Width - bc->Width) {
+				pl = 80;
+				ph += bc->Height + 5;
+			}
+			bc->Location = System::Drawing::Point(pl, ph);
+		}
+
+		bc->OnOpen += gcnew BookCard::OpenHandler(this, &Window::OnOpen);
+		bc->OnUpdateCLClick += gcnew BookCard::OpenHandler(this, &Window::OnUpdateCLClick);
+		bc->OnCardClick += gcnew BookCard::CardHandler(this, &Window::CardClick);
+		homePage->Controls->Add(bc);
+	}
 	void ClearHomePageControls() {
 		homePage->Controls->Clear();
 	}

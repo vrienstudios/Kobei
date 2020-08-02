@@ -73,4 +73,5 @@ public:
 		OnCardClick(this);
 	}
 	void OnClick(System::Object^ sender, System::EventArgs^ e);
+	void OnMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 };
