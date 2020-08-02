@@ -235,7 +235,8 @@ int Window::HomePageGeneration() {
 			err->Image = System::Drawing::Bitmap::FromStream(Resources::GetObject("error_NoNovels.png"));
 			err->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			err->Click += gcnew System::EventHandler(this, &Window::BookAddOnClick);
-			homePage->Controls->Add(err);
+			AddControls^ addCo = gcnew AddControls(this, &Window::AddHomePageControl);
+			homePage->Invoke(addCo, err);
 			System::Windows::Forms::Button^ AddBtn = gcnew System::Windows::Forms::Button;
 			AddBtn->Click += gcnew System::EventHandler(this, &Window::BookAddOnClick);
 			AddBtn->Text = "Add Book";
@@ -252,10 +253,12 @@ int Window::HomePageGeneration() {
 			UpdateBox->Controls->Add(pic);
 			UpdateBox->Dock = System::Windows::Forms::DockStyle::Bottom;
 			UpdateBox->Height = 150;
-			homePage->Controls->Add(UpdateBox);
+			homePage->Invoke(addCo, UpdateBox);
+			delete addCo;
 			break;
 		}
 		case 1: {
+			AddControls^ addCo = gcnew AddControls(this, &Window::AddHomePageControl);
 			for (unsigned int idx = 0; idx < BookTable->Length(); idx++)
 			{
 				BookCard^ bc = gcnew BookCard(safe_cast<Book^>(BookTable(idx, true)), false);
@@ -278,8 +281,9 @@ int Window::HomePageGeneration() {
 				bc->OnOpen += gcnew BookCard::OpenHandler(this, &Window::OnOpen);
 				bc->OnUpdateCLClick += gcnew BookCard::OpenHandler(this, &Window::OnUpdateCLClick);
 				bc->OnCardClick += gcnew BookCard::CardHandler(this, &Window::CardClick);
-				homePage->Controls->Add(bc);
+				homePage->Invoke(addCo, bc);
 			}
+			delete addCo;
 			break;
 		}
 		}

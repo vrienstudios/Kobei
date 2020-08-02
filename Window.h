@@ -132,6 +132,7 @@ public:
 	void AddHomePageControl(System::Windows::Forms::Control^ control) {
 		homePage->Controls->Add(control);
 	}
+
 	void ClearHomePageControls() {
 		homePage->Controls->Clear();
 	}
