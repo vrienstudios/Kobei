@@ -43,6 +43,7 @@ int Window::PageGeneration() {
 	
 	Resources::LoadResourceSystem();
 
+	//UI Setup
 	toolStripDropDownButton1 = gcnew System::Windows::Forms::ToolStripDropDownButton();
 	importKTFBookToolStripMenuItem = gcnew System::Windows::Forms::ToolStripMenuItem();
 	exportAsKTFBookToolStripMenuItem = gcnew System::Windows::Forms::ToolStripMenuItem();

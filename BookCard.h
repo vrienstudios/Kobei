@@ -48,6 +48,7 @@ public:
 	delegate void OpenHandler(System::Object^ sender, System::EventArgs^ e);
 	Book^ AttachedBook;
 
+	//Events
 	event OpenHandler^ OnOpen;
 	event OpenHandler^ OnDelete;
 	event OpenHandler^ OnUpdateCLClick;
