@@ -5,6 +5,7 @@
 #include "Book.h"
 #include "BookAddForm.h"
 #include "Preferences.h"
+#include "XAA.h"
 // Entry Point
 [System::STAThreadAttribute]
 int main(int argc, char* argv[]) {
