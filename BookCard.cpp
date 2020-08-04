@@ -186,10 +186,8 @@ void BookCard::openFire(System::Object^ sender, System::EventArgs^ e, unsigned i
 
 void BookCard::OnClick(System::Object^ sender, System::EventArgs^ e)
 {
-	
 	CardClick();
 }
-
 
 void BookCard::OnMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {

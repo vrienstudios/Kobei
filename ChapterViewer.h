@@ -33,4 +33,5 @@ public:
 			ExecuteEvent(this, System::EventArgs::Empty, 2);
 		}
 	};
+	void OnScroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e);
 };

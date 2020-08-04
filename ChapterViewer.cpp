@@ -14,6 +14,7 @@ ChapterView::ChapterView(Chapter^ chp)
 	rtb->Text += "\n\n";
 	rtb->Text += safe_cast<Chapter^>(chapterBuffer(1))->Name + "\n\n";
 	rtb->Text += (safe_cast<Chapter^>(chapterBuffer(1))->Text->ToString()->Replace('\r', ' '));
+	this->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &ChapterView::OnScroll);
 	this->Controls->Add(rtb);
 }
 
@@ -24,4 +25,9 @@ void ChapterView::ExecuteEvent(ChapterView^ sender, System::EventArgs^ e, unsign
 		OnOpen(sender, e);
 		break;
 	}
+}
+
+void ChapterView::OnScroll(System::Object^ sender, System::Windows::Forms::ScrollEventArgs^ e)
+{
+	throw gcnew System::NotImplementedException();
 }
