@@ -6,7 +6,22 @@
 #include <algorithm>
 
 struct XAA {
-	System::String^ DeSerialize(System::Object^ clss) {
+	System::Void SerializeToFile(System::Object^ clss, std::string path) {
+		System::Type^ t = clss->GetType();
+		cli::array<System::Reflection::FieldInfo^>^ pi = t->GetFields();
+		System::Text::StringBuilder^ sBuilder = gcnew System::Text::StringBuilder();
+		sBuilder->AppendLine(("<" + t->Name + ">"));
+		for (int idx = 0; idx < pi->Length; idx++)
+			sBuilder->AppendLine(pi[idx]->Name + ":" + pi[idx]->GetValue(clss)->ToString());
+		sBuilder->AppendLine(("</" + t->Name + ">"));
+
+		std::ofstream out(path.c_str());
+		out << msclr::interop::marshal_as<std::string>(sBuilder->ToString());
+		out.close();
+		delete sBuilder;
+	}
+
+	System::String^ Serialize(System::Object^ clss) {
 		System::Type^ t = clss->GetType();
 		cli::array<System::Reflection::FieldInfo^>^ pi = t->GetFields();
 		System::Text::StringBuilder^ sBuilder = gcnew System::Text::StringBuilder();
@@ -17,8 +32,7 @@ struct XAA {
 		return sBuilder->ToString();
 	}
 
-	//https://www.youtube.com/watch?v=42iqg_UFORA
-	System::Object^ Serialize(cli::array<System::String^>^ xaa, System::Type^ clss) {
+	System::Object^ DeSerialize(cli::array<System::String^>^ xaa, System::Type^ clss) {
 		System::Object^ m = System::Activator::CreateInstance(clss);
 		for (int idx = 1; idx < xaa->Length - 2; idx++) {
 			cli::array<System::String^>^ tokenSplit = xaa[idx]->Split(':');
