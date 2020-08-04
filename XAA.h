@@ -40,13 +40,24 @@ struct XAA {
 					tmp->Add(msclr::interop::marshal_as<System::String^>(ma.str(0)));
 				}
 				clss->GetField(tokenSplit[0])->SetValue(m, tmp);
+				delete tmp;
 				break;
 			}
 			case Functions::SwitchString("System.Collections.Generic.List`1[System.Int32]"): {
+				std::regex r("[(.*?)]");
+				std::smatch ma;
+				std::string atemp = msclr::interop::marshal_as<std::string>(tokenSplit[1]->ToString());
+				System::Collections::Generic::List<System::Int32>^ tmp = gcnew System::Collections::Generic::List<System::Int32>();
+				while (std::regex_search(atemp, ma, r)) { // Why regex will no longer take a "temporary" string as a parameter, I will not know.
+					tmp->Add(System::Int32::Parse(msclr::interop::marshal_as<System::String^>(ma.str(0))));
+				}
+				clss->GetField(tokenSplit[0])->SetValue(m, tmp);
+				delete tmp;
 				break;
 			}
 			}
-
+			delete tokenSplit;
 		}
+		return m;
 	}
 };
