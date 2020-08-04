@@ -198,6 +198,7 @@
     <ClInclude Include="Vpanel.h" />
     <ClInclude Include="VTable.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="XAA.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Book.cpp" />

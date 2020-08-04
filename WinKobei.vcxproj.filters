@@ -123,6 +123,9 @@
     <ClInclude Include="ChapterViewer.h">
       <Filter>Header Files\Form\UI</Filter>
     </ClInclude>
+    <ClInclude Include="XAA.h">
+      <Filter>Header Files\Classes\Data\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EntryPoint.cpp">
