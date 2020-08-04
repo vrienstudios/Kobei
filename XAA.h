@@ -20,9 +20,11 @@ struct XAA {
 			cli::array<System::String^>^ tokenSplit = xaa[idx]->Split(':');
 			switch (Functions::SwitchString(msclr::interop::marshal_as<std::string>(clss->GetField(tokenSplit[0])->FieldType->ToString()).c_str())) {
 			case Functions::SwitchString("System.Int32"): {
+				clss->GetField(tokenSplit[0])->SetValue(m, System::Int32::Parse(tokenSplit[1]));
 				break;
 			}
 			case Functions::SwitchString("System.String"): {
+				clss->GetField(tokenSplit[0])->SetValue(m, tokenSplit[1]);
 				break;
 			}
 			}
