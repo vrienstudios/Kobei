@@ -25,13 +25,12 @@ void Volume::ParseVolume(System::String^ directory) {
 		Chp->Text = System::IO::File::ReadAllText(split[idx]);
 		
 		allocate[idx] = Chp;
-		delete Chp;
-		delete ssplit;
+		delete Chp, ssplit;
 	}
 
 	for (unsigned int idx = 0; idx < split->Length - 2; idx++) {
 		for (unsigned int i = idx + 1; i > 0; i--) {
-			if (std::atoi(msclr::interop::marshal_as<std::string>(allocate[i - 1]->Name->ToString()).substr(0, Functions::LeadingIntegralCount(msclr::interop::marshal_as<std::string>(allocate[i - 1]->Name->ToString()).c_str())).c_str()) > std::atoi(msclr::interop::marshal_as<std::string>(allocate[i]->Name->ToString()).substr(0, Functions::LeadingIntegralCount(msclr::interop::marshal_as<std::string>(allocate[i]->Name->ToString()).c_str())).c_str())) {
+			if (allocate[i - 1]->Number > allocate[i]->Number) {
 				Chapter^ t = allocate[i - 1];
 				allocate[i - 1] = allocate[i];
 				allocate[i] = t;

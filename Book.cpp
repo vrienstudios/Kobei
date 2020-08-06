@@ -76,11 +76,7 @@ Book^ Book::ParseBook(System::String^ bookfolder)
 	std::fstream fstream;
 	fstream.open(msclr::interop::marshal_as<std::string>(System::IO::Directory::GetFiles(bookfolder)[0]->ToString()), std::ios::in);
 	std::string a;
-	//std::getline(fstream, a);
-	//a = istream.rdbuf();
-	//std::getline(istream, a, '\n');
 	std::string aa;
-	//std::istringstream as(a);
 	int idx = 0;
 	std::stringstream buffer;
 	buffer << istream.rdbuf();
@@ -109,11 +105,6 @@ Book^ Book::ParseBook(System::String^ bookfolder)
 		idx++;
 	}
 
-	//std::cout << a << std::endl;
-	//title = msclr::interop::marshal_as<System::String^>(a);
-
-	//std::getline(iStream, a);
-	//author = msclr::interop::marshal_as<System::String^>(a);
 	book->Cover = cover;
 
 	return book;
@@ -128,15 +119,6 @@ Book::Book(System::Drawing::Bitmap^ cover, System::String^ title, System::String
 	Chapters = gcnew VTable(Chapter::typeid);
 	Volumes = gcnew VTable(Volume::typeid);
 }
-
-//Book::Book(System::Drawing::Bitmap^ cover, System::String^ title, unsigned int ranking, unsigned int currentChapter, unsigned int chapters)
-//{
-//	Cover = cover;
-//	Title = title;
-//	Ranking = ranking;
-//	CurrentChapter = currentChapter;
-//	Chapters = chapters;
-//}
 
 Book::Book(const Book% book) {
 	Cover = book.Cover;
