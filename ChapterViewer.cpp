@@ -17,6 +17,7 @@ ChapterView::ChapterView(Chapter^ chp)
 	rtb->AppendText(safe_cast<Chapter^>(chapterBuffer(1))->Text->ToString()->Replace('\r', ' '));
 	rtb->Height = 570;
 	rtb->Width = 800;
+	rtb->ReadOnly = true;
 	this->Controls->Add(rtb);
 	rtb->VScroll += gcnew System::EventHandler(this, &ChapterView::OnVScroll);
 	//this->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &ChapterView::OnScroll);
@@ -42,6 +43,8 @@ void ChapterView::OnScroll(System::Object^ sender, System::Windows::Forms::Scrol
 
 void ChapterView::OnVScroll(System::Object^ sender, System::EventArgs^ e)
 {
+	rtb->DeselectAll();
+	this->Select();
 	if ((rtb->GetPositionFromCharIndex(0).Y * -1) > rtb->TextLength / 4) {
 		ExecuteEvent(this, nullptr, 0);
 		rtb->AppendText(safe_cast<Chapter^>(chapterBuffer(2))->Text->ToString()->Replace('\r', ' '));
