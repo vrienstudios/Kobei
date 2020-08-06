@@ -194,7 +194,7 @@ int Window::PageGeneration() {
 	tabControl->TabPages->Add(emailSupportPage);
 	AboutPageGeneration();
 	tabControl->TabPages->Add(aboutPage);
-	ChaperPageGeneration();
+	ChaperPageGeneration(nullptr);
 	tabControl->TabPages->Add(chapterDetailView);
 
 	Form->Controls->Add(toolStrip1);
@@ -391,7 +391,7 @@ int Window::AboutPageGeneration() {
 	return -1;
 }
 
-int Window::ChaperPageGeneration()
+int Window::ChaperPageGeneration(Volume^ selvolume)
 {
 	if (currentChapter == nullptr) {
 		chapterDetailView = gcnew System::Windows::Forms::TabPage;
@@ -400,12 +400,16 @@ int Window::ChaperPageGeneration()
 	}
 	else
 		chapterDetailView->Controls->Clear();
-
-	chapterDetailView->BackColor = System::Drawing::Color::Red;
-	chapterDetailView->Dock = System::Windows::Forms::DockStyle::Fill;
-	ChapterView^ chapviewer = gcnew ChapterView(currentChapter);
-	chapviewer->Dock = System::Windows::Forms::DockStyle::Fill;
-	chapterDetailView->Controls->Add(chapviewer);
+	if (selvolume != nullptr) {
+		chapterDetailView->BackColor = System::Drawing::Color::Red;
+		chapterDetailView->Dock = System::Windows::Forms::DockStyle::Fill;
+		ChapterView^ chapviewer = gcnew ChapterView(currentChapter);
+		chapviewer->selectedVolume = selvolume;
+		chapviewer->OnOpen += gcnew ChapterView::EventHandler(this, &Window::OnOnOpen);
+		chapviewer->Dock = System::Windows::Forms::DockStyle::Fill;
+		chapviewer->inde = currentChapter->Number;
+		chapterDetailView->Controls->Add(chapviewer);
+	}
 	return 0;
 }
 
@@ -523,6 +527,7 @@ void Window::OnOpen(System::Object^ sender, System::EventArgs^ e)
 		std::cout << "Error! Null check failed!" << std::endl;
 	}
 	MessageBox(NULL, TEXT("Book details have been printed to console!"), TEXT("Kobei: BC 45t"), MB_ICONINFORMATION | MB_OK);
+	return;
 }
 
 
@@ -549,6 +554,7 @@ void Window::OnUpdateCLClick(System::Object^ sender, System::EventArgs^ e)
 
 	safe_cast<BookCard^>(sender)->AttachedBook->numChapters = chapters;
 	safe_cast<BookCard^>(sender)->AttachedBook->Update();
+	return;
 }
 
 void Window::LoadNovelAsync()
@@ -568,15 +574,14 @@ void Window::LoadNovelAsync()
 		volCol->BackColor = System::Drawing::Color::Blue;
 		SetSelectedIndex^ d = gcnew SetSelectedIndex(this, &Window::SetTabControlSelectedIndex);
 		tabControl->Invoke(d, gcnew cli::array<System::Object^> {3});
-		delete d;
-		delete b;
+		delete d, b;
 		return;
 }
 
-void Window::OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter)
+void Window::OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Volume^ vol)
 {
-	currentChapter = chapter;
-	ChaperPageGeneration();
+	currentChapter = safe_cast<Chapter^>(vol->ChapterList(i - 1));
+	ChaperPageGeneration(vol);
 	tabControl->SelectedIndex = 6;
 }
 
@@ -604,4 +609,12 @@ void Window::BookAddOnClick(System::Object^ sender, System::EventArgs^ e)
 	delete homePage;
 	HomePageGeneration();
 	//throw gcnew System::NotImplementedException();
+}
+
+void Window::OnOnOpen(ChapterView^& sender, System::EventArgs^ e)
+{
+	Chapter^ newchp = safe_cast<Chapter^>(sender->selectedVolume->ChapterList(currentChapter->Number, TRUE));
+	currentChapter = newchp;
+	sender->chapterBuffer(2, newchp);
+	return;
 }

@@ -204,11 +204,12 @@ void VolumeCollapsible::OnMouseClick(System::Object^ sender, System::Windows::Fo
 
 void VolumeCollapsible::CardMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
-	selChapter = safe_cast<VPanel^>(sender)->Chp;
+	selVolume = safe_cast<VPanel^>(sender)->Chp->attachedVolume;
+	selChapter = safe_cast<VPanel^>(sender)->Chp->Number;
 	ChapterFlag = FALSE;
 }
 
-void VolumeCollapsible::ExecuteEvent(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter)
+void VolumeCollapsible::ExecuteEvent(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Volume^ vol)
 {
-	TriggerChapterOpen(sender, e, i, chapter);
+	TriggerChapterOpen(sender, e, i, vol);
 }

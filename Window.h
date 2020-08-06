@@ -74,7 +74,7 @@ private:
 	int BookViewPageGeneration();
 	int EmailSupportPageGeneration();
 	int AboutPageGeneration();
-	int ChaperPageGeneration();
+	int ChaperPageGeneration(Volume^ selvolume);
 
 
 	int LoadBooks();
@@ -98,7 +98,7 @@ public:
 	int Hide();
 
 	//Events
-	void OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter);
+	void OnTriggerChapterOpen(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Volume^ vol);
 	void FromUriClick(System::Object^ sender, System::EventArgs^ e);
 	void OnSelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
 	void ShowSideBarMouseEnter(System::Object^ sender, System::EventArgs^ e);
@@ -158,4 +158,5 @@ public:
 	void ClearHomePageControls() {
 		homePage->Controls->Clear();
 	}
+	void OnOnOpen(ChapterView^& sender, System::EventArgs^ e);
 };

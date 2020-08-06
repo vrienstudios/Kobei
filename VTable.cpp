@@ -6,17 +6,25 @@ VTable::VTable(System::Object ^tableType) {
 	TableType = tableType->GetType();
 	accessors = gcnew cli::array<System::Object^>(0);
 	objects = gcnew cli::array<System::Object^>(0);
+	delete tableType;
 }
 
 VTable::VTable(System::Type^ tableType) {
 	TableType = tableType;
 	accessors = gcnew cli::array<System::Object^>(0);
 	objects = gcnew cli::array<System::Object^>(0);
+	delete tableType;
 }
 
 VTable::~VTable() {
 	accessors->Clear;
 	objects->Clear;
+}
+
+System::Object^ VTable::operator()(int location, System::Object^ newobj)
+{
+	this->objects[location] = newobj;
+	return nullptr;
 }
 
 VTable::VTable(System::Type^ keyType, System::Type^ valueType)
@@ -43,7 +51,6 @@ System::Object^ VTable::operator()(int index, bool key) {
 
 System::Object^ VTable::operator()(System::Object^ item, bool key) {
 	if (key) {
-		//MessageBox(NULL, std::string(msclr::interop::marshal_as<std::string>(System::Array::IndexOf(accessors, index).ToString())).c_str(), "Kobei: Preferences", MB_ICONERROR | MB_OK);
 		return objects[System::Array::IndexOf(accessors, item)];
 	}
 	else
@@ -88,7 +95,7 @@ void VTable::AddKeyValuePairs(System::Object^ key, System::Object^ item) {
 
 	accessors = tempArray;
 
-	delete tempArray;
+	delete key, item, tempArray;
 }
 
 // Add object to array.
@@ -106,6 +113,7 @@ void VTable::Add(System::Object^ key, System::Object^ item) {
 	}
 	else
 		CreateKeyValuePairs(key, item);
+	delete key, item;
 }
 
 inline bool VTable::ContainsValue(System::Object^ value)

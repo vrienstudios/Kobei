@@ -29,6 +29,7 @@ public:
 	System::Object^ operator()(int index, bool key);
 	System::Object^ operator()(System::Object^ item, bool key);
 	System::Object^ operator()(System::Object^ item);
+	System::Object^ operator()(int location, System::Object^ newobj);
 
 	bool ContainsAccessor(System::Object^ value);
 	bool ContainsValue(System::Object^ value);

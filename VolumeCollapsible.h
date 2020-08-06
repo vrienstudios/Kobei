@@ -5,7 +5,8 @@ ref class VolumeCollapsible : System::Windows::Forms::Panel {
 private:
 	VTable^ Volumes;
 	VTable^ CollapsibleControls;
-	Chapter^ selChapter;
+	int selChapter;
+	Volume^ selVolume;
 public:
 	void AnimateOpen(VPanel^& panel);
 	void AnimateClose(VPanel^& panel);
@@ -18,13 +19,13 @@ public:
 	void CardMouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 
 
-	delegate void EventHandler(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter);
-	virtual void ExecuteEvent(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Chapter^ chapter);
+	delegate void EventHandler(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Volume^ vol);
+	virtual void ExecuteEvent(VolumeCollapsible^ sender, System::EventArgs^ e, unsigned int i, Volume^ vol);
 	event EventHandler^ TriggerChapterOpen;
 
 	property bool ChapterFlag {
 		void set(bool value) {
-			ExecuteEvent(this, System::EventArgs::Empty, 0, selChapter);
+			ExecuteEvent(this, System::EventArgs::Empty, selChapter, selVolume);
 		}
 	};
 };

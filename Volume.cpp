@@ -21,7 +21,7 @@ void Volume::ParseVolume(System::String^ directory) {
 
 		Chp->Name = ssplit[ssplit->Length - 1];
 		Chp->attachedVolume = this;
-		Chp->Number = idx;
+		Chp->Number = std::atoi(msclr::interop::marshal_as<std::string>(Chp->Name->ToString()).substr(0, Functions::LeadingIntegralCount(msclr::interop::marshal_as<std::string>(Chp->Name->ToString()).c_str())).c_str());
 		Chp->Text = System::IO::File::ReadAllText(split[idx]);
 		
 		allocate[idx] = Chp;
