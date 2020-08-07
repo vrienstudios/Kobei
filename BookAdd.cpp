@@ -459,11 +459,7 @@ System::String^ BookAddForm::WWDownloadChapterContent(Chapter^ Chp)
 	node = WuxiaWorld->getElementById("content");
 	//MessageBox(NULL, msclr::interop::marshal_as<std::string>(node->innerHTML->ToString()).c_str(), "", MB_ICONWARNING);
 
-	delete wc;
-	delete node;
-	delete WuxiaWorld;
-	delete WuxiaWorld2;
-	delete Data;
+	delete wc, node, WuxiaWorld, WuxiaWorld2, Data;
 
 	System::Console::WriteLine("Getting Content");
 	if (node != nullptr) {
