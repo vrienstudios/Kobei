@@ -329,7 +329,6 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	//Get info node to gather information
 	node = WuxiaWorld->getElementById("info");
 	mainArgs = node->innerText->Split(gcnew cli::array<System::String^>{"\n"}, System::StringSplitOptions::None);
-	node = WuxiaWorld->getElementById("intro");
 
 	//Initialize book with that information
 	std::string btitle = msclr::interop::marshal_as<std::string>(mainArgs[1]->Substring(7));
@@ -383,6 +382,29 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 
 BOOL BookAddForm::DownloadFromBoxNovel()
 {
+	System::Net::WebClient^ wc = gcnew System::Net::WebClient;
+
+	char sprintBuffer[1024];
+
+	mshtml::HTMLDocument^ BoxNovel;
+	mshtml::IHTMLDocument2^ BoxNovel2;
+	mshtml::IHTMLElement^ node;
+
+	//Copy html document to htmlDocument
+	BoxNovel = gcnew mshtml::HTMLDocumentClass();
+	BoxNovel2 = (mshtml::IHTMLDocument2^)BoxNovel;
+	BoxNovel2->write(wc->DownloadString(Uri));
+
+	cli::array<System::String^>^ mainArgs;
+
+	Book^ B;
+	mshtml::IHTMLElementCollection^ collection = BoxNovel->all;
+	mshtml::IHTMLElement^ title = Functions::GetFirstElementByClassName(collection->GetEnumerator(), "post-title", collection->length); //TODO: start a thread for both of these.
+	mshtml::IHTMLElement^ author = Functions::GetFirstElementByClassName(collection->GetEnumerator(), "author-content", collection->length);
+	node = BoxNovel->getElementById("editdescription");
+	B = gcnew Book(nullptr, title->innerText, author->innerText, nullptr);
+	B->Summary = node->innerText;
+
 	return 0;
 }
 
@@ -417,6 +439,7 @@ void BookAddForm::LoadBookFromUri() {
 		DownloadFromWuxiaWorld();
 		break;
 	case Functions::SwitchString("boxnovel"):
+		DownloadFromBoxNovel();
 		break;
 	}
 }

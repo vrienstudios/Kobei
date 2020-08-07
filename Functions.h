@@ -14,4 +14,37 @@ struct Functions {
 	static unsigned int CountFollowingWhiteSpace(std::string str, int h, int i = 0) {
 		return (h > 0) ? (std::isspace(str[h])) ? CountFollowingWhiteSpace(str, h - 1, i + 1) : i : CountFollowingWhiteSpace(str, str.length() - 1);
 	}
+
+	static mshtml::IHTMLElement^ GetFirstElementByClassName(System::Collections::IEnumerator^ enumerable, System::String^ className, unsigned int length) {
+		if (length == NULL) {
+			length = 0;
+			while (enumerable->MoveNext())
+				length++;
+			enumerable->Reset();
+		}
+		for (unsigned int idx = 0; idx < length; idx++) {
+			enumerable->MoveNext();
+			if (safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className == className)
+				return safe_cast<mshtml::IHTMLElement^>(enumerable->Current);
+		}
+		return nullptr;
+	}
+
+	static VTable^ GetAllElementsByClassName(System::Collections::IEnumerator^ enumerable, System::String^ className, unsigned int length) {
+		VTable^ list = gcnew VTable(mshtml::IHTMLElement::typeid);
+		if (length == NULL) {
+			length = 0;
+			while (enumerable->MoveNext())
+				length++;
+			enumerable->Reset();
+		}
+		for (unsigned int idx = 0, unsigned int i = 0; idx < length; idx++) {
+			enumerable->MoveNext();
+			if (safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className == className) {
+				list->Add(i, safe_cast<mshtml::IHTMLElement^>(enumerable->Current));
+				i++;
+			}
+		}
+		return nullptr;
+	}
 };
