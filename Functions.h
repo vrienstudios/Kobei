@@ -38,10 +38,11 @@ struct Functions {
 				length++;
 			enumerable->Reset();
 		}
-		for (unsigned int idx = 0, unsigned int i = 0; idx < length; idx++) {
+		unsigned int i = 0;
+		for (unsigned int idx = 0; idx < length; idx++) {
 			enumerable->MoveNext();
 			if (safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className == className) {
-				list->Add(i, safe_cast<mshtml::IHTMLElement^>(enumerable->Current));
+				list->Add((System::Object^)i, safe_cast<mshtml::IHTMLElement^>(enumerable->Current));
 				i++;
 			}
 		}

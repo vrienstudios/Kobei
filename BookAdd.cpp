@@ -5,15 +5,16 @@
 #include <algorithm>
 #include <regex>
 
+
 Book^ BookAddForm::GetBook(bool showForm)
 {
 	if (!showForm)
-		return bk;
+		return BookAddForm::bk;
 
 	Initform();
 	Form->ShowDialog();
 
-	return bk;
+	return BookAddForm::bk;
 }
 
 void BookAddForm::Initform()
@@ -207,19 +208,19 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 {
 	char buffer[1024];
 	std::string stdPath;
-	sprintf_s(buffer, "%s\\Books\\%s\\%s", Preferences::GetBookDirectory().c_str(), msclr::interop::marshal_as<std::string>(bk->Title->ToString()).c_str(), "000_b_Data.ktf");
+	sprintf_s(buffer, "%s\\Books\\%s\\%s", Preferences::GetBookDirectory().c_str(), msclr::interop::marshal_as<std::string>(BookAddForm::bk->Title->ToString()).c_str(), "000_b_Data.ktf");
 	stdPath = std::string(buffer);
 	stdPath.erase(std::remove(stdPath.begin(), stdPath.end(), '\r'), stdPath.end());
 	stdPath.erase(std::remove(stdPath.begin(), stdPath.end(), '?'), stdPath.end());
 	stdPath = std::regex_replace(stdPath, std::regex("^ +| +$|( ) +"), "$1");
 	std::ofstream L(stdPath.c_str());
-	L << msclr::interop::marshal_as<std::string>(bk->Title->ToString()).c_str();
-	L << msclr::interop::marshal_as<std::string>(bk->Author->ToString()).c_str();
-	L << msclr::interop::marshal_as<std::string>(bk->CurrentChapter.ToString()).c_str();
-	L << msclr::interop::marshal_as<std::string>(bk->CurrentChapter.ToString()).c_str();
-	if (bk->Summary != nullptr) {
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Title->ToString()).c_str();
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Author->ToString()).c_str();
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->CurrentChapter.ToString()).c_str();
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->CurrentChapter.ToString()).c_str();
+	if (BookAddForm::BookAddForm::bk->Summary != nullptr) {
 		L << "_SUMMARY_";
-		L << msclr::interop::marshal_as<std::string>(bk->Summary->ToString()).c_str();
+		L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Summary->ToString()).c_str();
 		L << "_END_";	
 	}
 	L.close();
@@ -268,13 +269,13 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 				else { // Override and export old volume.
 					if (VolumeBuffer != nullptr) {
 						ExportVolumeFull(VolumeBuffer);
-						bk->Volumes->Add(VolumeExports, VolumeBuffer);
+						BookAddForm::bk->Volumes->Add(VolumeExports, VolumeBuffer);
 						VolumeExports++;
 					}
 					if (idx != 0) {
 						Volume^ Vol = gcnew Volume; // Create a new handle for Volume
 						Vol->Name = element->innerText; // Set volume name to html element text.
-						Vol->attachedBook = bk;
+						Vol->attachedBook = BookAddForm::bk;
 						VolumeBuffer = Vol; // Set VolumeBuffer
 						//MessageBox(NULL, msclr::interop::marshal_as<std::string>("IF135: " + Vol->Name->ToString()).c_str(), "Kobei: AddBook", MB_ICONERROR | MB_YESNO);
 						//ExportVolumeFull(Vol);
@@ -288,7 +289,7 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 
 	VolumeExports++;
 	ExportVolumeFull(VolumeBuffer); // Export last volume;
-	bk->Volumes->Add(VolumeExports, VolumeBuffer);
+	BookAddForm::bk->Volumes->Add(VolumeExports, VolumeBuffer);
 	x = 0;
 	delete element;
 
@@ -350,7 +351,7 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	System::IO::Directory::CreateDirectory(System::String::Format("{0}\\Books\\{1}", msclr::interop::marshal_as<System::String^>(Preferences::GetBookDirectory()), B->Title->ToString()));
 	wc->DownloadFile(e, ex);
 	B->Cover = gcnew System::Drawing::Bitmap(ex);
-	bk = B;
+	BookAddForm::bk = B;
 	node = WuxiaWorld->getElementById("list");
 	//Port it to an enumerable object.
 	mshtml::IHTMLElementCollection^ HTMLElements = (mshtml::IHTMLElementCollection^)node->all;
