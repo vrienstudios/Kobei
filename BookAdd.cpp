@@ -441,18 +441,18 @@ BOOL BookAddForm::DownloadFromBoxNovel()
 	collection = BoxNovel->all;
 
 	VTable^ chapters = Functions::GetAllElementsByClassName(collection->GetEnumerator(), "wp-manga-chapter", collection->length);
-	delete BoxNovel, BoxNovel2, title, author, node;
+	delete BoxNovel, BoxNovel2, collection, title, author, node;
 	//sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.\nI plan on adding a background download function later on and provide multi-threaded support. Please note, I will always be trying to optimize this, so please hold on.", chapters->Length());
 	switch (MessageBox(NULL, sprintBuffer, "Kobei: AddBook", MB_ICONERROR | MB_YESNO)) {
 	case 6:
 		//Call EnumerateWeb function
-		//EnumerateWebBoxNovel(chapters, TRUE, chapters->Length());
+		EnumerateWebBoxNovel(chapters, TRUE, chapters->Length());
 		break;
 	case 7:
-		//EnumerateWebBoxNovel(chapters, FALSE, chapters->Length());
+		EnumerateWebBoxNovel(chapters, FALSE, chapters->Length());
 		break;
 	}
-	delete collection;
+	delete chapters;
 	return 0;
 }
 
