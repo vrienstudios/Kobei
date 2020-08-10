@@ -52,7 +52,7 @@ void BookAddForm::Initform()
 
 	Form->Controls->AddRange(gcnew cli::array<System::Windows::Forms::Control^>{checkBox, textBox, submitBtn });
 
-	textBox->Text = "https://www.wuxiaworld.co/Lord-of-the-Mysteries/";
+	textBox->Text = "https://www.boxnovel.com/novel/i-am-a-prodigy/";
 }
 
 void BookAddForm::submitBtnOnMouseClick(System::Object^ sender, System::EventArgs^ e)
@@ -295,9 +295,36 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 
 }
 
-void BookAddForm::EnumerateWebBoxNovel(System::Collections::IEnumerator^ enumerable, BOOL downloadChapter, unsigned int length)
+void BookAddForm::EnumerateWebBoxNovel(VTable^& table, BOOL downloadChapter, unsigned int length)
 {
-	throw gcnew System::NotImplementedException();
+	char buffer[1024];
+	std::string stdPath;
+	sprintf_s(buffer, "%s\\Books\\%s\\%s", Preferences::GetBookDirectory().c_str(), msclr::interop::marshal_as<std::string>(BookAddForm::bk->Title->ToString()).c_str(), "000_b_Data.ktf");
+	stdPath = std::string(buffer);
+	stdPath.erase(std::remove(stdPath.begin(), stdPath.end(), '\r'), stdPath.end());
+	stdPath.erase(std::remove(stdPath.begin(), stdPath.end(), '?'), stdPath.end());
+	stdPath = std::regex_replace(stdPath, std::regex("^ +| +$|( ) +"), "$1");
+	std::ofstream L(stdPath.c_str());
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Title->ToString()).c_str();
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Author->ToString()).c_str();
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->CurrentChapter.ToString()).c_str();
+	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->CurrentChapter.ToString()).c_str();
+	if (BookAddForm::BookAddForm::bk->Summary != nullptr) {
+		L << "_SUMMARY_";
+		L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Summary->ToString()).c_str();
+		L << "_END_";
+	}
+	L.close();
+
+	std::string ihtml;
+	std::regex reg("href=\"(.*)\">");
+	std::smatch rm;
+	mshtml::IHTMLElement^ element;
+
+	for (int idx = 0; idx < table->Length(); idx++) {
+		element = safe_cast<mshtml::IHTMLElement^>(table(idx));
+
+	}
 }
 
 // Multi threading for this will come much further down the road. It would require me to rewrite this.
@@ -405,7 +432,27 @@ BOOL BookAddForm::DownloadFromBoxNovel()
 	node = BoxNovel->getElementById("editdescription");
 	B = gcnew Book(nullptr, title->innerText, author->innerText, nullptr);
 	B->Summary = node->innerText;
+	bk = B;
+	mshtml::HTMLDivElement^ a = safe_cast<mshtml::HTMLDivElement^>(Functions::GetFirstElementByClassName(collection->GetEnumerator(), "c-page", collection->length));
+	System::Object^ obj = a->innerHTML;
+	BoxNovel = gcnew mshtml::HTMLDocumentClass();
+	BoxNovel2 = (mshtml::IHTMLDocument2^)BoxNovel;
+	BoxNovel2->write(a->innerHTML);
+	collection = BoxNovel->all;
 
+	VTable^ chapters = Functions::GetAllElementsByClassName(collection->GetEnumerator(), "wp-manga-chapter", collection->length);
+	delete BoxNovel, BoxNovel2, title, author, node;
+	//sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.\nI plan on adding a background download function later on and provide multi-threaded support. Please note, I will always be trying to optimize this, so please hold on.", chapters->Length());
+	switch (MessageBox(NULL, sprintBuffer, "Kobei: AddBook", MB_ICONERROR | MB_YESNO)) {
+	case 6:
+		//Call EnumerateWeb function
+		//EnumerateWebBoxNovel(chapters, TRUE, chapters->Length());
+		break;
+	case 7:
+		//EnumerateWebBoxNovel(chapters, FALSE, chapters->Length());
+		break;
+	}
+	delete collection;
 	return 0;
 }
 

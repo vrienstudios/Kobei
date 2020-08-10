@@ -41,11 +41,12 @@ struct Functions {
 		unsigned int i = 0;
 		for (unsigned int idx = 0; idx < length; idx++) {
 			enumerable->MoveNext();
+			System::Console::WriteLine(safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className);
 			if (safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className == className) {
 				list->Add((System::Object^)i, safe_cast<mshtml::IHTMLElement^>(enumerable->Current));
 				i++;
 			}
 		}
-		return nullptr;
+		return list;
 	}
 };
