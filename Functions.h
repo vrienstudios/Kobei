@@ -19,6 +19,14 @@ struct Functions {
 		return (h > 0) ? (std::isspace(str[h])) ? CountFollowingWhiteSpace(str, h - 1, i + 1) : i : CountFollowingWhiteSpace(str, str.length() - 1);
 	}
 
+	static int GetManagedStringLength(System::String^ str) {
+		return msclr::interop::marshal_as<std::string>(str).length();
+	}
+
+	static System::String^ SkipCharSequence(System::String^ base, char* charSequence, int h = 0) {
+		return (base[h] == charSequence[h]) ? SkipCharSequence(base, charSequence, h + 1) : base->Substring(h, GetManagedStringLength(base) - h);
+	}
+
 	static mshtml::IHTMLElement^ GetFirstElementByClassName(System::Collections::IEnumerator^ enumerable, System::String^ className, unsigned int length) {
 		if (length == NULL) {
 			length = 0;

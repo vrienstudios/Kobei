@@ -325,7 +325,10 @@ void BookAddForm::EnumerateWebBoxNovel(VTable^ table, BOOL downloadChapter, unsi
 		for (int idx = 0; idx < table->Length(); idx++) {
 			element = safe_cast<mshtml::IHTMLElement^>(table(idx));
 			rm = Functions::ManagedRegex(element->innerHTML, "href=\"(.*)\">");
-			System::Windows::Forms::MessageBox::Show(element->innerText);
+			Chapter^ chp = gcnew Chapter();
+			chp->Uri = msclr::interop::marshal_as<System::String^>(rm[1].str());
+			element->innerText->Substring();
+			//chp->Name = 
 		}
 	}
 }
