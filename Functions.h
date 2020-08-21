@@ -1,6 +1,10 @@
 #pragma once
 #include <ctype.h>
 #include <cctype>
+#include <algorithm>
+#include <regex>
+#include "Includes.h"
+#include "Functions.h"
 struct Functions {
 	static constexpr unsigned int SwitchString(const char* str, int h = 0)
 	{
@@ -48,5 +52,15 @@ struct Functions {
 			}
 		}
 		return list;
+	}
+
+	static std::smatch ManagedRegex(System::String^ str, std::string regex) {
+		std::smatch re;
+		std::string string(msclr::interop::marshal_as<std::string>(str->ToString()));
+		std::regex_match(string, re, std::regex(regex));
+		string.clear();
+		delete str; 
+		regex.clear();
+		return re;
 	}
 };

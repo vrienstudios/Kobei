@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Includes.h"
 #include "Book.h"
 #include "Chapter.h"
@@ -50,6 +49,6 @@ public:
 	static System::String^ WWDownloadChapterContent(Chapter^ Chp);
 
 	static BOOL DownloadFromBoxNovel();
-	static void EnumerateWebBoxNovel(VTable^& table, BOOL downloadChapter, unsigned int length);
+	static void EnumerateWebBoxNovel(VTable^ table, BOOL downloadChapter, unsigned int length);
 	static System::String^ BNDownloadChapterContent(Chapter^ Chp);
 };

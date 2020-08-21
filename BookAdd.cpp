@@ -254,7 +254,7 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 						ihtml = msclr::interop::marshal_as<std::string>(element->innerHTML); // Get element href data
 						std::regex_search(ihtml, rm, reg); // Match said html to regex expression to find the ID url.
 						sprintf_s(buffer, "%s/%s", msclr::interop::marshal_as<std::string>(Uri->ToString()).c_str(), rm[1].str().c_str()); // Parse the ID URL
-						if (System::String(buffer).ToString() != "https://www.wuxiaworld.co/Lord-of-the-Mysteries//") { // check if it's an actual chapter object.
+						if (System::String(buffer).ToString() != AraHost) { // check if it's an actual chapter object.
 							ChapterWrap(Chp, VolumeBuffer, System::String(buffer).ToString(), downloadChapter, 0); // Wrap all contents to the Chapter
 							VolumeBuffer->ChapterList->Add(x, Chp); // Add chapter to the volume buffer
 							x++;
@@ -295,7 +295,7 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 
 }
 
-void BookAddForm::EnumerateWebBoxNovel(VTable^& table, BOOL downloadChapter, unsigned int length)
+void BookAddForm::EnumerateWebBoxNovel(VTable^ table, BOOL downloadChapter, unsigned int length)
 {
 	char buffer[1024];
 	std::string stdPath;
@@ -321,9 +321,12 @@ void BookAddForm::EnumerateWebBoxNovel(VTable^& table, BOOL downloadChapter, uns
 	std::smatch rm;
 	mshtml::IHTMLElement^ element;
 
-	for (int idx = 0; idx < table->Length(); idx++) {
-		element = safe_cast<mshtml::IHTMLElement^>(table(idx));
-
+	if (downloadChapter) {
+		for (int idx = 0; idx < table->Length(); idx++) {
+			element = safe_cast<mshtml::IHTMLElement^>(table(idx));
+			rm = Functions::ManagedRegex(element->innerHTML, "href=\"(.*)\">");
+			System::Windows::Forms::MessageBox::Show(element->innerText);
+		}
 	}
 }
 
@@ -385,7 +388,7 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 
 	//Get Enumerator
 	System::Collections::IEnumerator^ enumerable = HTMLElements->GetEnumerator();
-	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.\nI plan on adding a background download function later on and provide multi-threaded support. Please note, I will always be trying to optimize this, so please hold on.", HTMLElements->length);
+	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.", HTMLElements->length);
 	switch (MessageBox(NULL, sprintBuffer, "Kobei: AddBook", MB_ICONERROR | MB_YESNO)) {
 	case 6:
 		//Call EnumerateWeb function
@@ -442,7 +445,7 @@ BOOL BookAddForm::DownloadFromBoxNovel()
 
 	VTable^ chapters = Functions::GetAllElementsByClassName(collection->GetEnumerator(), "wp-manga-chapter", collection->length);
 	delete BoxNovel, BoxNovel2, collection, title, author, node;
-	//sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.\nI plan on adding a background download function later on and provide multi-threaded support. Please note, I will always be trying to optimize this, so please hold on.", chapters->Length());
+	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.", chapters->Length());
 	switch (MessageBox(NULL, sprintBuffer, "Kobei: AddBook", MB_ICONERROR | MB_YESNO)) {
 	case 6:
 		//Call EnumerateWeb function

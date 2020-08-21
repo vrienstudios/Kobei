@@ -58,8 +58,8 @@ System::Object^ VTable::operator()(System::Object^ item, bool key) {
 }
 
 // Default functionality is to return value paired with key.
-System::Object^ VTable::operator()(System::Object^ item) {
-		return objects[System::Array::IndexOf(accessors, item)];
+System::Object^ VTable::operator()(int item) {
+		return objects[item];
 }
 
 // If there are not any objects populating the array, create the arrays and populate them.
