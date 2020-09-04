@@ -327,6 +327,15 @@ void BookAddForm::EnumerateWebBoxNovel(VTable^ table, BOOL downloadChapter, unsi
 			rm = Functions::ManagedRegex(element->innerHTML, "href=\"(.*)\">");
 			Chapter^ chp = gcnew Chapter();
 			chp->Uri = msclr::interop::marshal_as<System::String^>(rm[1].str());
+			mshtml::IHTMLElementCollection^ ikd = safe_cast<mshtml::IHTMLElementCollection^>(element->all);
+			System::Collections::IEnumerator^ ienum = ikd->GetEnumerator();
+			/*while (ienum->MoveNext())
+			{
+				mshtml::IHTMLElement^ elema = safe_cast<mshtml::IHTMLElement^>(ienum->Current);
+				System::Console::WriteLine(elema->innerText + "-");
+			}*/
+			ienum->MoveNext();
+			chp->Name = safe_cast<mshtml::IHTMLElement^>(ienum->Current)->innerText;
 			BNDownloadChapterContent(chp);
 		}
 	}
@@ -432,10 +441,14 @@ BOOL BookAddForm::DownloadFromBoxNovel()
 
 	Book^ B;
 	mshtml::IHTMLElementCollection^ collection = BoxNovel->all;
-	//mshtml::IHTMLElement^ title = Functions::GetFirstElementByClassName(collection->GetEnumerator(), "post-title", collection->length); //TODO: start a thread for both of these.
+	mshtml::IHTMLElement^ title = Functions::GetFirstElementByClassName(collection->GetEnumerator(), "post-title", collection->length); //TODO: start a thread for both of these.
+	mshtml::IHTMLElementCollection^ aTitle = safe_cast<mshtml::IHTMLElementCollection^>(title->all);
 	mshtml::IHTMLElement^ author = Functions::GetFirstElementByClassName(collection->GetEnumerator(), "author-content", collection->length);
+	System::Collections::IEnumerator^ aski = aTitle->GetEnumerator();
+	aski->MoveNext();
+	mshtml::IHTMLElement^ aaTitle = safe_cast<mshtml::IHTMLElement^>(aski->Current);
 	node = BoxNovel->getElementById("editdescription");
-	B = gcnew Book(nullptr, nullptr, author->innerText, nullptr);
+	B = gcnew Book(nullptr, title->innerText, author->innerText, nullptr);
 	B->Summary = node->innerText;
 	bk = B;
 	mshtml::HTMLDivElement^ a = safe_cast<mshtml::HTMLDivElement^>(Functions::GetFirstElementByClassName(collection->GetEnumerator(), "c-page", collection->length));
@@ -446,7 +459,7 @@ BOOL BookAddForm::DownloadFromBoxNovel()
 	collection = BoxNovel->all;
 
 	VTable^ chapters = Functions::GetAllElementsByClassName(collection->GetEnumerator(), "wp-manga-chapter", collection->length);
-	delete BoxNovel, BoxNovel2, collection, author, node;
+	delete BoxNovel, BoxNovel2, title, collection, author, node;
 	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.", chapters->Length());
 	switch (MessageBox(NULL, sprintBuffer, "Kobei: AddBook", MB_ICONERROR | MB_YESNO)) {
 	case 6:
