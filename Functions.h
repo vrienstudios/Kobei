@@ -23,7 +23,7 @@ struct Functions {
 		return msclr::interop::marshal_as<std::string>(str).length();
 	}
 
-	static System::String^ SkipCharSequence(System::String^ base, char* charSequence, int h = 0) {
+	static System::String^ SkipCharSequence(System::String^ base, const char* charSequence, int h = 0) {
 		return (base[h] == charSequence[h]) ? SkipCharSequence(base, charSequence, h + 1) : base->Substring(h, GetManagedStringLength(base) - h);
 	}
 
