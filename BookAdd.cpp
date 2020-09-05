@@ -3,6 +3,7 @@
 #include "Chapter.h"
 #include "Volume.h"
 #include <algorithm>
+#include <cstdlib>
 #include <regex>
 
 
@@ -361,7 +362,6 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	cli::array<System::String^>^ mainArgs;
 
 	Book^ B;
-
 	// Init
 	wwHtml = wc->DownloadString(Uri);
 	//Copy html document to htmlDocument
@@ -369,14 +369,13 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	WuxiaWorld2 = (mshtml::IHTMLDocument2^)WuxiaWorld;
 	WuxiaWorld2->write(wwHtml);
 	//Get info node to gather information
-	node = WuxiaWorld->getElementById("info");
+	node = Functions::GetFirstElementByClassName(WuxiaWorld->all->GetEnumerator(), "book-info", WuxiaWorld->all->length);
 	mainArgs = node->innerText->Split(gcnew cli::array<System::String^>{"\n"}, System::StringSplitOptions::None);
 
 	//Initialize book with that information
-	std::string btitle = msclr::interop::marshal_as<std::string>(mainArgs[1]->Substring(7));
-	B = gcnew Book(nullptr, mainArgs[0], msclr::interop::marshal_as<System::String^>(btitle.substr(0, btitle.length() - (Functions::CountFollowingWhiteSpace(btitle, 0)))), mainArgs[3]->Substring(11));
-	btitle.clear();
-	B->Summary = node->innerHTML;
+	//std::string btitle = msclr::interop::marshal_as<std::string>(mainArgs[1]->Substring(7));
+	B = gcnew Book(nullptr, mainArgs[2], mainArgs[10]->Substring(8), nullptr);
+	//B->Summary = node->innerText;
 	//Honestly, fuck windows and backslash.
 	sprintf_s(sprintBuffer, "%s\\Books\\%s\\%s.jpg", Preferences::GetBookDirectory().c_str(), msclr::interop::marshal_as<std::string>(B->Title->ToString()).c_str(), msclr::interop::marshal_as<std::string>(B->Title->ToString()).c_str());
 	ex = msclr::interop::marshal_as<System::String^>(std::string(sprintBuffer));
@@ -385,7 +384,7 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 
 	//e = "http://" + "wuxiaworld.co" + "/BookFiles/BookImages/" + B->Title->Replace(' ', '-') + ".jpg";
 	System::String^ fckintellisenseandplusoperators = B->Title->ToString()->Replace(' ', '-');
-	sprintf_s(sprintBuffer, "https://www.wuxiaworld.co/BookFiles/BookImages/%s.jpg", msclr::interop::marshal_as<std::string>(fckintellisenseandplusoperators).c_str());
+	sprintf_s(sprintBuffer, "https://img.wuxiaworld.co/BookFiles/BookImages/%s.jpg", msclr::interop::marshal_as<std::string>(fckintellisenseandplusoperators).c_str());
 	e = msclr::interop::marshal_as<System::String^>(std::string(sprintBuffer));
 	e = e->Replace("\r", System::String::Empty);
 
@@ -395,18 +394,16 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	BookAddForm::bk = B;
 	node = WuxiaWorld->getElementById("list");
 	//Port it to an enumerable object.
-	mshtml::IHTMLElementCollection^ HTMLElements = (mshtml::IHTMLElementCollection^)node->all;
-
-	//Get Enumerator
-	System::Collections::IEnumerator^ enumerable = HTMLElements->GetEnumerator();
-	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.", HTMLElements->length);
+	VTable^ lk = Functions::GetAllElementsByClassName(WuxiaWorld->all->GetEnumerator(), "chapter-item", WuxiaWorld->all->length);
+	System::Collections::IEnumerable^ ena = lk->GetArray();
+	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.", lk->Length());
 	switch (MessageBox(NULL, sprintBuffer, "Kobei: AddBook", MB_ICONERROR | MB_YESNO)) {
 	case 6:
 		//Call EnumerateWeb function
-		EnumerateWeb(enumerable, TRUE, HTMLElements->length);
+		EnumerateWeb(ena->GetEnumerator(), TRUE, lk->Length());
 		break;
 	case 7:
-		EnumerateWeb(enumerable, FALSE, HTMLElements->length);
+		EnumerateWeb(ena->GetEnumerator(), FALSE, lk->Length());
 		break;
 	}
 
@@ -460,14 +457,14 @@ BOOL BookAddForm::DownloadFromBoxNovel()
 
 	VTable^ chapters = Functions::GetAllElementsByClassName(collection->GetEnumerator(), "wp-manga-chapter", collection->length);
 	delete BoxNovel, BoxNovel2, title, collection, author, node;
-	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.", chapters->Length());
+	sprintf_s(sprintBuffer, "Would you like for me to download all the available chapters? There are %i available. \n{Disclaimer!} Chapters take on average ~2s to download and parse depending on the internet connection. So beware, this could take a long time.", chapters->Length() - 1);
 	switch (MessageBox(NULL, sprintBuffer, "Kobei: AddBook", MB_ICONERROR | MB_YESNO)) {
 	case 6:
 		//Call EnumerateWeb function
-		EnumerateWebBoxNovel(chapters, TRUE, chapters->Length());
+		EnumerateWebBoxNovel(chapters, TRUE, chapters->Length() - 1);
 		break;
 	case 7:
-		EnumerateWebBoxNovel(chapters, FALSE, chapters->Length());
+		EnumerateWebBoxNovel(chapters, FALSE, chapters->Length() - 1);
 		break;
 	}
 	delete chapters;

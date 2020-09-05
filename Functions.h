@@ -36,6 +36,22 @@ struct Functions {
 		}
 		for (unsigned int idx = 0; idx < length; idx++) {
 			enumerable->MoveNext();
+			System::Console::WriteLine(safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className + "idx:" + idx + "le" + length);
+			if (safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className == className)
+				return safe_cast<mshtml::IHTMLElement^>(enumerable->Current);
+		}
+		return nullptr;
+	}
+
+	static mshtml::IHTMLElement^ SearchFirstElementByClassName(System::Collections::IEnumerator^ enumerable, System::String^ className, unsigned int length) {
+		if (length == NULL) {
+			length = 0;
+			while (enumerable->MoveNext())
+				length++;
+			enumerable->Reset();
+		}
+		for (unsigned int idx = 0; idx < length; idx++) {
+			enumerable->MoveNext();
 			if (safe_cast<mshtml::IHTMLElement^>(enumerable->Current)->className == className)
 				return safe_cast<mshtml::IHTMLElement^>(enumerable->Current);
 		}
@@ -67,8 +83,26 @@ struct Functions {
 		std::string string(msclr::interop::marshal_as<std::string>(str->ToString()));
 		std::regex_match(string, re, std::regex(regex));
 		string.clear();
-		delete str; 
+		delete str;
 		regex.clear();
 		return re;
+	}
+
+	static mshtml::IHTMLElement^ depS(System::Collections::IEnumerator^ enumerable, System::String^ searchTerm, unsigned int length) {
+		while (enumerable->MoveNext()) {
+			mshtml::IHTMLElement^ ele = safe_cast<mshtml::IHTMLElement^>(enumerable->Current);
+			if (ele->className == searchTerm)
+				return ele;
+			else if(ele->innerHTML != nullptr) {
+				mshtml::IHTMLDocument^ b1 = gcnew mshtml::HTMLDocumentClass();
+				mshtml::IHTMLDocument2^ b2;
+				b2 = safe_cast<mshtml::IHTMLDocument2^>(b1);
+				b2->write(ele->innerHTML);
+				mshtml::IHTMLElement^ a = depS(b2->all->GetEnumerator(), searchTerm, b2->all->length);
+				if (a != nullptr)
+					return a;
+				delete b1, b2, a;
+			}
+		}
 	}
 };
