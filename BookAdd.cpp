@@ -53,7 +53,7 @@ void BookAddForm::Initform()
 
 	Form->Controls->AddRange(gcnew cli::array<System::Windows::Forms::Control^>{checkBox, textBox, submitBtn });
 
-	textBox->Text = "https://www.boxnovel.com/novel/i-am-a-prodigy/";
+	textBox->Text = "https://www.wuxiaworld.co/Lord-of-the-Mysteries/";
 }
 
 void BookAddForm::submitBtnOnMouseClick(System::Object^ sender, System::EventArgs^ e)
@@ -196,7 +196,6 @@ void BookAddForm::ExportChapterSingular(Chapter^ chapter)
 
 void BookAddForm::ChapterWrap(Chapter^& chap, Volume^& _attachedVolume, System::String^ _uri, BOOLEAN _downloadContent, unsigned int flg) {
 	chap->attachedVolume = _attachedVolume;
-	chap->Uri = _uri;
 	if(_downloadContent)
 		switch (flg) {
 		case 0:
@@ -236,24 +235,27 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 	enumerable->Reset();
 	
 	std::string ihtml;
-	std::regex reg("href=\"(.*)\">");
+	std::regex reg("href=\"(.*?)\">");
 	std::smatch rm;
 	mshtml::IHTMLElement^ element;
 	int VolumeExports = 0;
 	int x = 0;
+	VolumeBuffer = gcnew Volume;
+	VolumeBuffer->Name = "VolMain";
 	for (unsigned int idx = 0; idx < length; idx++) //enumerate the enumerable.
 	{
 		enumerable->MoveNext();
 			// Declare handle for element and grab current element;
 			element = safe_cast<mshtml::IHTMLElement^>(enumerable->Current);
 			if (element != nullptr) { // nullcheck
-				if (IsNumericRef(element->innerText->ToCharArray()[0].ToString()) == true) { // check if the element has a chapter number
+				if (IsNumericRef(element->innerText->Replace("\r\n", System::String::Empty)->ToCharArray()[0].ToString()) == true) { // check if the element has a chapter number
 					if (VolumeBuffer != nullptr && !ChapterList->ContainsAccessor(VolumeBuffer)) { // Make sure that the volume is not a copy and t hat VolumeBuffer exists.
 						element = safe_cast<mshtml::IHTMLElement^>(enumerable->Current); // set element to current element.
 						Chapter^ Chp = gcnew Chapter; // Create a new handle for Chapter
 						Chp->Name = element->innerText; // Set the chapter name to the elements text which should be {number} {name};
-						ihtml = msclr::interop::marshal_as<std::string>(element->innerHTML); // Get element href data
+						ihtml = msclr::interop::marshal_as<std::string>(element->outerHTML); // Get element href data
 						std::regex_search(ihtml, rm, reg); // Match said html to regex expression to find the ID url.
+						Chp->Uri = "https://www.wuxiaworld.co" + msclr::interop::marshal_as<System::String^>(rm[1].str());
 						sprintf_s(buffer, "%s/%s", msclr::interop::marshal_as<std::string>(Uri->ToString()).c_str(), rm[1].str().c_str()); // Parse the ID URL
 						if (System::String(buffer).ToString() != AraHost) { // check if it's an actual chapter object.
 							ChapterWrap(Chp, VolumeBuffer, System::String(buffer).ToString(), downloadChapter, 0); // Wrap all contents to the Chapter
@@ -262,6 +264,7 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 							ChapBf = Chp;
 						}
 						delete Chp;
+						delete element;
 					}
 					else { // if for some reason volume buffer doesn't exist error.
 						std::exception("ERROR 114");
@@ -337,7 +340,7 @@ void BookAddForm::EnumerateWebBoxNovel(VTable^ table, BOOL downloadChapter, unsi
 			}*/
 			ienum->MoveNext();
 			chp->Name = safe_cast<mshtml::IHTMLElement^>(ienum->Current)->innerText;
-			BNDownloadChapterContent(chp);
+			BNDownloadChapterContent(chp, nullptr);
 		}
 	}
 }
@@ -369,7 +372,13 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 	WuxiaWorld2 = (mshtml::IHTMLDocument2^)WuxiaWorld;
 	WuxiaWorld2->write(wwHtml);
 	//Get info node to gather information
-	node = Functions::GetFirstElementByClassName(WuxiaWorld->all->GetEnumerator(), "book-info", WuxiaWorld->all->length);
+	System::Collections::IEnumerator^ a = WuxiaWorld->all->GetEnumerator();
+	while (a->MoveNext()) // If I don't enumerate them here, for some reason it breaks.
+	{
+		System::Console::WriteLine(safe_cast<mshtml::IHTMLElement^>(a->Current)->className);
+	}
+	while(node == nullptr)
+		node = Functions::GetFirstElementByClassName(WuxiaWorld->all->GetEnumerator(), "book-info", WuxiaWorld->all->length);
 	mainArgs = node->innerText->Split(gcnew cli::array<System::String^>{"\n"}, System::StringSplitOptions::None);
 
 	//Initialize book with that information
@@ -407,14 +416,7 @@ BOOL BookAddForm::DownloadFromWuxiaWorld() {
 		break;
 	}
 
-	delete wwHtml;
-	delete ex;
-	delete e;
-	delete WuxiaWorld;
-	delete WuxiaWorld2;
-	delete node;
-	delete mainArgs;
-	delete B;
+	delete wwHtml, ex, e, WuxiaWorld, WuxiaWorld2, node, mainArgs, B, wc;
 
 	return true;
 }
@@ -519,12 +521,12 @@ System::String^ BookAddForm::WWDownloadChapterContent(Chapter^ Chp)
 	WuxiaWorld2 = (mshtml::IHTMLDocument2^)WuxiaWorld;
 	WuxiaWorld2->write(Data);
 
-	node = WuxiaWorld->getElementById("content");
-	//MessageBox(NULL, msclr::interop::marshal_as<std::string>(node->innerHTML->ToString()).c_str(), "", MB_ICONWARNING);
+	node = WuxiaWorld->getElementById("section-list-wp");
+	//MessageBox(NULL, msclr::interop::marshal_as<std:ngl:string>(node->innerHTML->ToString()).c_str(), "", MB_ICONWARNING);
 
 	delete wc, node, WuxiaWorld, WuxiaWorld2, Data;
 
-	System::Console::WriteLine("Getting Content");
+	System::Console::WriteLine("Getting Content " + Chp->Name);
 	if (node != nullptr) {
 		return node->innerText;
 	}
@@ -534,8 +536,27 @@ System::String^ BookAddForm::WWDownloadChapterContent(Chapter^ Chp)
 	}
 }
 
-System::String^ BookAddForm::BNDownloadChapterContent(Chapter^ Chp)
+System::String^ BookAddForm::BNDownloadChapterContent(Chapter^ Chp, System::Net::WebClient^ wc)
 {
-	throw gcnew System::NotImplementedException();
-	// TODO: insert return statement here
+	System::Net::WebClient^ client;
+
+	if (wc == nullptr)
+		client = gcnew System::Net::WebClient();
+	else
+		client = wc;
+	client->AllowWriteStreamBuffering = false;
+	client->AllowReadStreamBuffering = false;
+
+	//client->CachePolicy = System::Net::Cache::HttpRequestCachePolicy::
+	mshtml::IHTMLDocument^ hm1 = gcnew mshtml::HTMLDocumentClass();
+	mshtml::IHTMLDocument2^ hm2_Writer = (mshtml::IHTMLDocument2^)hm1;
+	
+	System::String^ bnHTML = wc->DownloadString(Chp->Uri);
+	hm2_Writer->write(bnHTML);
+
+	//TODO: Sort IFRAME to get text content
+
+	System::String^ content;
+	delete client;
+	return content;
 }

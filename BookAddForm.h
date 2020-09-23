@@ -50,5 +50,5 @@ public:
 
 	static BOOL DownloadFromBoxNovel();
 	static void EnumerateWebBoxNovel(VTable^ table, BOOL downloadChapter, unsigned int length);
-	static System::String^ BNDownloadChapterContent(Chapter^ Chp);
+	static System::String^ BNDownloadChapterContent(Chapter^ Chp, System::Net::WebClient^ wc);
 };

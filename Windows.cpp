@@ -447,6 +447,7 @@ int Window::LoadBooks() {
 System::String^ Window::GetBookDirectory() {
 
 	//Check whether preferenced exist or not.
+	//System::String^ curDir = gcnew System::IO::GetCurrentDirectory();
 	System::String^ s1 = gcnew System::String(std::string("C:\\Program Files (x86)\\Kobei\\settings.txt").c_str());
 	if (!System::IO::File::Exists(s1))
 	{
