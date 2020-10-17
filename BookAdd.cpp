@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include <regex>
 
-
 Book^ BookAddForm::GetBook(bool showForm)
 {
 	if (!showForm)
@@ -91,7 +90,7 @@ void BookAddForm::ExportVolumeFull(Volume^ volume)
 	stdPath.erase(std::remove(stdPath.begin(), stdPath.end(), '\r'), stdPath.end());
 	stdPath.erase(std::remove(stdPath.begin(), stdPath.end(), '?'), stdPath.end());
 	stdPath = std::regex_replace(stdPath, std::regex("^ +| +$|( ) +"), "$1");
-	std::cout << "{80} I sure hope that this path is correct and free of everything except a-z/A-Z 1-100 :: " << stdPath << "\n";
+	//std::cout << "{80} I sure hope that this path is correct and free of everything except a-z/A-Z 1-100 :: " << stdPath << "\n";
 	std::string bookp;
 	sprintf_s(buffer, "%s\\Books\\%s", Preferences::GetBookDirectory().c_str(), msclr::interop::marshal_as<std::string>(volume->attachedBook->Title->ToString()).c_str());
 	bookp = std::string(buffer);
@@ -110,14 +109,14 @@ void BookAddForm::ExportVolumeFull(Volume^ volume)
 				sprintf_s(buffer, "%s\\%s.%s", VolumePath.c_str(), msclr::interop::marshal_as<std::string>(Chp->Name->ToString()).c_str(), "ktf");
 				chapterPath = buffer;
 				std::ofstream CharlesTheFirstStream(chapterPath.c_str());
-				CharlesTheFirstStream << "_HEAD_CHAPTER_" << "\n";
+				//CharlesTheFirstStream << "_HEAD_CHAPTER_" << "\n";
 				CharlesTheFirstStream << msclr::interop::marshal_as<std::string>(Chp->Name->ToString()) << "::" << std::to_string(Chp->Number) << "\n";
-				CharlesTheFirstStream << "_TEXT_" << "\n";
+				//CharlesTheFirstStream << "_TEXT_" << "\n";
 				if (Chp->Text == nullptr)
 					CharlesTheFirstStream << "_TEXT__NULL_";
 				else
 					CharlesTheFirstStream << msclr::interop::marshal_as<std::string>(Chp->Text->ToString()) << "\n";
-				CharlesTheFirstStream << "_CHAPTER_END_" << "\n";
+				//CharlesTheFirstStream << "_CHAPTER_END_" << "\n";
 				CharlesTheFirstStream.close();
 			}
 		}
@@ -218,11 +217,11 @@ void BookAddForm::EnumerateWeb(System::Collections::IEnumerator^ enumerable, BOO
 	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Author->ToString()).c_str();
 	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->CurrentChapter.ToString()).c_str();
 	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->CurrentChapter.ToString()).c_str();
-	if (BookAddForm::BookAddForm::bk->Summary != nullptr) {
-		L << "_SUMMARY_";
-		L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Summary->ToString()).c_str();
-		L << "_END_";	
-	}
+	//if (BookAddForm::BookAddForm::bk->Summary != nullptr) {
+	//	L << "_SUMMARY_";
+	//	L << msclr::interop::marshal_as<std::string>(BookAddForm::bk->Summary->ToString()).c_str();
+	//	L << "_END_";	
+	//}
 	L.close();
 
 	// Setup buffer for chapterlist
@@ -511,20 +510,26 @@ void BookAddForm::LoadBookFromUri() {
 
 System::String^ BookAddForm::WWDownloadChapterContent(Chapter^ Chp)
 {
-	System::Net::WebClient^ wc = gcnew System::Net::WebClient;
+
+	System::Net::HttpWebRequest^ wreq;
+	wreq = (System::Net::HttpWebRequest^)wreq->Create(Chp->Uri);
+	System::Net::HttpWebResponse^ wrep;
+	wrep = safe_cast<System::Net::HttpWebResponse^>(wreq->GetResponse());
+	System::IO::StreamReader^ sr = gcnew System::IO::StreamReader(wrep->GetResponseStream());
 	mshtml::HTMLDocument^ WuxiaWorld;
 	mshtml::IHTMLDocument2^ WuxiaWorld2;
 	mshtml::IHTMLElement^ node;
 	
-	System::String^ Data = wc->DownloadString(Chp->Uri);	
+	System::String^ Data = sr->ReadToEnd();	
 	WuxiaWorld = gcnew mshtml::HTMLDocumentClass();
 	WuxiaWorld2 = (mshtml::IHTMLDocument2^)WuxiaWorld;
+	WuxiaWorld->enableDownload = false;
 	WuxiaWorld2->write(Data);
 
 	node = WuxiaWorld->getElementById("section-list-wp");
 	//MessageBox(NULL, msclr::interop::marshal_as<std:ngl:string>(node->innerHTML->ToString()).c_str(), "", MB_ICONWARNING);
 
-	delete wc, node, WuxiaWorld, WuxiaWorld2, Data;
+	delete wreq, wrep, sr, node, WuxiaWorld, WuxiaWorld2, Data;
 
 	System::Console::WriteLine("Getting Content " + Chp->Name);
 	if (node != nullptr) {
@@ -544,9 +549,13 @@ System::String^ BookAddForm::BNDownloadChapterContent(Chapter^ Chp, System::Net:
 		client = gcnew System::Net::WebClient();
 	else
 		client = wc;
-	client->AllowWriteStreamBuffering = false;
-	client->AllowReadStreamBuffering = false;
 
+	System::Net::HttpWebRequest^ wreq;
+	wreq = gcnew System::Net::HttpWebRequest();
+	wreq->Create(Chp->Uri);
+	System::Net::HttpWebResponse^ wrep;
+	wrep = safe_cast<System::Net::HttpWebResponse^>(wreq->GetResponse());
+	System::IO::StreamReader^ sr = gcnew System::IO::StreamReader(wrep->GetResponseStream());
 	//client->CachePolicy = System::Net::Cache::HttpRequestCachePolicy::
 	mshtml::IHTMLDocument^ hm1 = gcnew mshtml::HTMLDocumentClass();
 	mshtml::IHTMLDocument2^ hm2_Writer = (mshtml::IHTMLDocument2^)hm1;
@@ -557,6 +566,5 @@ System::String^ BookAddForm::BNDownloadChapterContent(Chapter^ Chp, System::Net:
 	//TODO: Sort IFRAME to get text content
 
 	System::String^ content;
-	delete client;
 	return content;
 }
